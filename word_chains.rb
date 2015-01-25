@@ -29,4 +29,23 @@ class WordChainer
     return_dictionary
   end
 
+  def run(source, target)
+    @current_words = [source]
+    @all_seen_words = [source]
+    until @current_words.empty?
+      new_current_words = []
+      @current_words.each do |word|
+        new_adjacent_words = adjacent_words(word)
+        new_adjacent_words.each do |adjacent_word|
+          if !@all_seen_words.include?(adjacent_word)
+            new_current_words << adjacent_word
+            @all_seen_words << adjacent_word
+          end
+        end
+      end
+      new_current_words.each { |word| puts word }
+      @current_words = new_current_words
+    end
+  end
+
 end
