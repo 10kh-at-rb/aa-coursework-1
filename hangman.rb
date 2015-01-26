@@ -74,12 +74,10 @@ class Player
     if indices.empty?
       puts "Your guess was not in the secret word."
       trim_dictionary(false)
-      puts @dictionary.count
     else
       indices.each do |i|
         @guessed_chars[i] = @guess
         trim_dictionary(true)
-        puts @dictionary.count
       end
     end
   end
