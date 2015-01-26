@@ -18,7 +18,12 @@ class Hangman
       indices = @word_picker.check_guess(guess)
       turns_left -= 1 if indices.empty?
       @guesser.handle_guess_response(indices)
-      puts "You have #{turns_left} turns remaining"
+      puts "You have #{turns_left} turns remaining."
+    end
+    if @guesser.guessed_chars.include?(nil)
+      puts "Sorry, you lost, the secret word was: #{@word_picker.secret_word}."
+    else
+      puts "Congratulations, you won!"
     end
   end
 
@@ -45,7 +50,8 @@ class Player
   end
 
   def pick_secret_word
-
+    print "Please select your secret word: "
+    @secret_word = gets.chomp
   end
 
   def receive_secret_length(length)
@@ -96,6 +102,7 @@ class ComputerPlayer < Player
   def initialize
     super
     @dictionary = File.readlines('dictionary.txt').map(&:chomp)
+    @alphabet = ('a'..'z').to_a.shuffle
   end
 
   def pick_secret_word
@@ -103,11 +110,7 @@ class ComputerPlayer < Player
   end
 
   def guess
-    valid = false
-    until valid
-      @guess = ('a'..'z').to_a.sample
-      valid = true unless @used_chars.include?(guess)
-    end
+    @guess = @alphabet.pop
     @used_chars << @guess
     @guess
   end
