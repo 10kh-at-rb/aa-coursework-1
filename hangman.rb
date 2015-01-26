@@ -73,9 +73,13 @@ class Player
   def handle_guess_response(indices)
     if indices.empty?
       puts "Your guess was not in the secret word."
+      trim_dictionary(false)
+      puts @dictionary.count
     else
       indices.each do |i|
         @guessed_chars[i] = @guess
+        trim_dictionary(true)
+        puts @dictionary.count
       end
     end
   end
@@ -102,17 +106,47 @@ class ComputerPlayer < Player
   def initialize
     super
     @dictionary = File.readlines('dictionary.txt').map(&:chomp)
-    @alphabet = ('a'..'z').to_a.shuffle
   end
 
   def pick_secret_word
     @secret_word = @dictionary.sample
   end
 
+  def receive_secret_length(length)
+    super
+    @dictionary.select! { |word| word.length == length }
+  end
+
   def guess
-    @guess = @alphabet.pop
+    letter_hash = Hash.new(0)
+    @dictionary.each do |word|
+      word.each_char do |char|
+        letter_hash[char] += 1
+      end
+    end
+    letter_hash.reject! { |char| @used_chars.include?(char) }
+    @guess = letter_hash.sort_by { |key, value| value }[-1][0]
     @used_chars << @guess
     @guess
   end
 
+  def trim_dictionary(guessed)
+    if guessed
+      @dictionary.delete_if do |word|
+        non_match = false
+        @guessed_chars.each_with_index do |char, index|
+          next if char.nil?
+          if word[index] != char
+            non_match = true
+            break
+          end
+        end
+        non_match
+      end
+    else
+      @dictionary.delete_if do |word|
+        word.include?(@guess)
+      end
+    end
+  end
 end
