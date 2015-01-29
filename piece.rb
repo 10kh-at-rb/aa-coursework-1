@@ -22,10 +22,14 @@ class Piece
   end
 
 
-  def perform_slide?(pos)
+  def perform_slide(pos)
     possible_moves = moves
     possible_moves.reject! { |x,y| !@board[x][y].nil? }
-    possible_moves.include?(pos)
+    return false unless possible_moves.include?(pos)
+    @board[pos.first][pos.last] = self
+    @board[@pos.first][@pos.last] = nil
+    @pos = pos
+    true
   end
 
   def jumps
@@ -39,20 +43,20 @@ class Piece
       new_y = (y - @pos.last) + y
       jumps << [new_x, new_y] if @board[new_x][new_y].nil?
     end
+    jumps.reject! { |jump| jump.min < 0 || jump.max > 7}
     jumps
   end
 
 
-  def perform_jump?(pos)
-    jumps.include?(pos)
-  end
-
   def perform_jump(pos)
+    return false unless jumps.include?(pos)
     jumped_x = (pos.first + @pos.first) / 2
     jumped_y = (pos.last + @pos.last) / 2
-    @board[median_x][median_y] = nil
+    @board[jumped_x][jumped_y] = nil
     @board[pos.first][pos.last] = self
-    @board[@pos.first][pos.last] = nil
+    @board[@pos.first][@pos.last] = nil
+    @pos = pos
+    true
   end
 
   def maybe_promote
@@ -60,6 +64,10 @@ class Piece
        (@pos.first == 7 && @color == :white)
         @king = true
     end
+  end
+
+  def perform_moves!(move_sequence)
+
   end
 
 end
