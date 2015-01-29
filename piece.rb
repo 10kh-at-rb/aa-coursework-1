@@ -9,10 +9,6 @@ class Piece
     @king = king
   end
 
-  def dup
-
-  end
-
   def moves
     direction = (@color == :black ? -1 : 1)
     moves = []
@@ -57,7 +53,6 @@ class Piece
     end
     jumps
   end
-
 
   def perform_jump(pos)
     return false unless jumps.include?(pos)

@@ -47,13 +47,17 @@ class Board
   end
 
   def no_moves?(color)
-    pieces = @board.flatten.compact.reject { |piece| piece.color != color }
-    return true if pieces.empty?
-    return true if pieces.all? do |piece|
+    pieces_arr = pieces(color)
+    return true if pieces_arr.empty?
+    return true if pieces_arr.all? do |piece|
       piece.available_moves.empty? && piece.jumps.empty?
     end
 
     false
+  end
+
+  def pieces(color)
+    @board.flatten.compact.reject { |piece| piece.color != color }
   end
 
   def print_current_board

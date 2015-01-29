@@ -21,8 +21,9 @@ class Player
     "1" => 7
   }
 
-  def initialize(color)
+  def initialize(color, board)
     @color = color
+    @board = board
   end
 
   def play_turn

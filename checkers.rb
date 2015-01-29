@@ -41,13 +41,13 @@ class Checkers
   end
 
   def get_players
-    @player1 = Player.new(:black)
+    @player1 = Player.new(:black, @board)
     puts "Please enter Player 1's name: "
     @player1.name = gets.chomp
 
-    @player2 = Player.new(:white)
-    puts "Please enter Player 2's name: "
-    @player2.name = gets.chomp
+    @player2 = ComputerPlayer.new(:white, @board)
+    # puts "Please enter Player 2's name: "
+    # @player2.name = gets.chomp
   end
 
 end
