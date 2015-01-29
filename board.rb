@@ -1,5 +1,4 @@
 #encoding: utf-8
-require 'colorize'
 
 class Board
   attr_accessor :board
@@ -47,7 +46,9 @@ class Board
   end
 
   def print_current_board
+    print " abcdefgh\n"
     @board.each_with_index do |row, x|
+      print "#{8 - x}"
       row.each_with_index do |tile, y|
         if tile.nil?
           if (x.even? && y.even?) || (x.odd? && y.odd?)
