@@ -1,5 +1,6 @@
 class Player
   attr_accessor :name
+  attr_reader :color
 
   POSITION_CONVERSION = {
     "A" => 0,
@@ -41,6 +42,10 @@ class Player
       # unless start_pos[1].between?("1", "8") && end_pos[1].between?("1", "8")
       #   raise ArgumentError.new "Invalid number input."
       # end
+
+      if move_chain.any? { |move| move.count != 2}
+        raise ArgumentError.new "Invalid piece location."
+      end
     rescue ArgumentError => e
       puts "#{e.message}"
       retry
@@ -49,17 +54,13 @@ class Player
     start_pos.map! { |i| POSITION_CONVERSION[i] }
     start_pos.reverse!
 
-    p "move chain before conversion: #{move_chain}"
     move_chain.each do |pair|
       pair.map! { |i| POSITION_CONVERSION[i] }
     end
-    p "move chain after conversion: #{move_chain}"
+
     move_chain.each do |move|
       move.reverse!
     end
-    p "move chain after reversal: #{move_chain}"
-    # start_pos = start_pos.split(",").map { |num| num.to_i }
-    # end_pos = end_pos.split(",").map { |num| num.to_i }
 
     [start_pos, move_chain]
   end

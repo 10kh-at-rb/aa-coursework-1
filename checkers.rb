@@ -1,7 +1,8 @@
 class Checkers
-  attr_accessor :player1, :player2
+  attr_accessor :player1, :player2, :board
   def initialize
     @board = Board.new
+    @player1_turn = false
   end
 
   def play
@@ -9,9 +10,30 @@ class Checkers
     get_players
 
     until false
-      @board.print_current_board
-      @player1.play_turn
+      switch_turn
+      break if @board.no_moves?(current_player.color)
+      turn(current_player)
     end
+    switch_turn
+    @board.print_current_board
+    puts "Congratulations #{current_player.name}!  You won!"
+  end
+
+  def switch_turn
+    @player1_turn = !@player1_turn
+  end
+
+  def current_player
+    @player1_turn ? @player1 : @player2
+  end
+
+  def turn(player)
+    @board.print_current_board
+    puts "Current Turn: #{player.name}"
+    moves = player.play_turn
+    piece = moves.first
+    move_chain = moves.last
+    @board.board[piece.first][piece.last].perform_moves(move_chain)
   end
 
   def print_welcome

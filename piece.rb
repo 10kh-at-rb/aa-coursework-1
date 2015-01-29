@@ -1,12 +1,12 @@
 class Piece
   attr_reader :color, :pos, :king
-  def initialize(board_object, pos, color)
+  def initialize(board_object, pos, color, king = false)
     @board_object = board_object
     @board = @board_object.board
     @pos = pos
     @board[pos.first][pos.last] = self
     @color = color
-    @king = false
+    @king = king
   end
 
   def dup
@@ -26,11 +26,16 @@ class Piece
     moves
   end
 
+  def available_moves
+    available_moves = moves
+    available_moves.reject! { |x,y| !@board[x][y].nil? }
+    available_moves
+  end
 
   def perform_slide(pos)
-    possible_moves = moves
-    possible_moves.reject! { |x,y| !@board[x][y].nil? }
-    return false unless possible_moves.include?(pos)
+    available_moves_array = available_moves
+    available_moves_array.reject! { |x,y| !@board[x][y].nil? }
+    return false unless available_moves_array.include?(pos)
     @board[pos.first][pos.last] = self
     @board[@pos.first][@pos.last] = nil
     @pos = pos

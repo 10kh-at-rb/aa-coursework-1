@@ -20,7 +20,8 @@ class Board
       x = piece.pos.first
       y = piece.pos.last
       color = piece.color
-      duped_board.board[x][y] = Piece.new(duped_board, [x,y], color)
+      king = piece.king
+      duped_board.board[x][y] = Piece.new(duped_board, [x,y], color, king)
       # duped_board.board[x][y].board = duped_board
     end
     duped_board
@@ -43,6 +44,16 @@ class Board
       end
     end
     nil
+  end
+
+  def no_moves?(color)
+    pieces = @board.flatten.compact.reject { |piece| piece.color != color }
+    return true if pieces.empty?
+    return true if pieces.all? do |piece|
+      piece.available_moves.empty? && piece.jumps.empty?
+    end
+
+    false
   end
 
   def print_current_board
