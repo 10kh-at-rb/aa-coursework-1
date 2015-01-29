@@ -1,9 +1,13 @@
 #encoding: utf-8
+require 'colorize'
+
 class Board
   attr_accessor :board
-  def initialize
+  def initialize(new_board = true)
     @board = Array.new(8) { Array.new(8) }
-    board_setup
+    if new_board
+      board_setup
+    end
   end
 
   # def [](pos)
@@ -11,11 +15,23 @@ class Board
   #   @board[i][j] = pos
   # end
 
+  def dup
+    duped_board = Board.new(false)
+    @board.flatten.compact.each do |piece|
+      x = piece.pos.first
+      y = piece.pos.last
+      color = piece.color
+      duped_board.board[x][y] = Piece.new(duped_board, [x,y], color)
+      # duped_board.board[x][y].board = duped_board
+    end
+    duped_board
+  end
+
   def board_setup
     0.upto(2) do |x|
       0.upto(7) do |y|
         if (x + y).odd?
-          @board[x][y] = Piece.new(@board, [x,y], :white)
+          @board[x][y] = Piece.new(self, [x,y], :white)
         end
       end
     end
@@ -23,7 +39,7 @@ class Board
     5.upto(7) do |x|
       0.upto(7) do |y|
         if (x + y).odd?
-          @board[x][y] = Piece.new(@board, [x,y], :black)
+          @board[x][y] = Piece.new(self, [x,y], :black)
         end
       end
     end
@@ -31,18 +47,16 @@ class Board
   end
 
   def print_current_board
-    @board.each do |row|
-      row.each do |tile|
+    @board.each_with_index do |row, x|
+      row.each_with_index do |tile, y|
         if tile.nil?
-          print "+"
-        elsif tile.color == :black && tile.king
-          print "♛"
-        elsif tile.color == :white && tile.king
-          print "♕"
-        elsif tile.color == :black
-          print "⚈"
-        elsif tile.color == :white
-          print "⚆"
+          if (x.even? && y.even?) || (x.odd? && y.odd?)
+            print " "
+          else
+            print " ".on_light_white
+          end
+        else
+          print tile.display.encode('utf-8').on_light_white
         end
       end
       print "\n"

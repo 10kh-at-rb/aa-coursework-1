@@ -1,11 +1,16 @@
 class Piece
   attr_reader :color, :pos, :king
-  def initialize(board, pos, color)
-    @board = board
+  def initialize(board_object, pos, color)
+    @board_object = board_object
+    @board = @board_object.board
     @pos = pos
     @board[pos.first][pos.last] = self
     @color = color
     @king = false
+  end
+
+  def dup
+
   end
 
   def moves
@@ -29,6 +34,7 @@ class Piece
     @board[pos.first][pos.last] = self
     @board[@pos.first][@pos.last] = nil
     @pos = pos
+    maybe_promote
     true
   end
 
@@ -41,9 +47,9 @@ class Piece
     possible_jumps.each do |x,y|
       new_x = (x - @pos.first) + x
       new_y = (y - @pos.last) + y
+      next if [new_x, new_y].min < 0 || [new_x, new_y].max > 7
       jumps << [new_x, new_y] if @board[new_x][new_y].nil?
     end
-    jumps.reject! { |jump| jump.min < 0 || jump.max > 7}
     jumps
   end
 
@@ -56,6 +62,7 @@ class Piece
     @board[pos.first][pos.last] = self
     @board[@pos.first][@pos.last] = nil
     @pos = pos
+    maybe_promote
     true
   end
 
@@ -67,7 +74,56 @@ class Piece
   end
 
   def perform_moves!(move_sequence)
-
+    if move_sequence.count == 1
+      unless perform_slide(move_sequence[0])
+        unless perform_jump(move_sequence[0])
+          raise InvalidMoveError.new
+          "#{move_sequence[0]} was not a valid Jump or Slide."
+        end
+      end
+    else
+      move_sequence.each do |move|
+        unless perform_jump(move)
+          raise InvalidMoveError.new
+          "#{move_sequence[0]} was not a valid Jump or Slide."
+        end
+      end
+    end
+    nil
   end
 
+  def valid_moves_seq?(move_sequence)
+    duped_board = @board_object.dup
+    begin
+      duped_board.board[@pos.first][@pos.last].perform_moves!(move_sequence)
+    rescue InvalidMoveError => e
+      return false
+    else
+      return true
+    end
+  end
+
+  def perform_moves(move_sequence)
+    if valid_moves_seq?(move_sequence)
+      perform_moves!(move_sequence)
+    else
+      raise InvalidMoveError.new "#{move_sequence} was not valid."
+    end
+  end
+
+  def display
+    if @color == :black && @king
+      "♛"
+    elsif @color == :white && @king
+      "♕"
+    elsif @color == :black
+      "◉"
+    else
+      "◎"
+    end
+  end
+
+end
+
+class InvalidMoveError < StandardError
 end
