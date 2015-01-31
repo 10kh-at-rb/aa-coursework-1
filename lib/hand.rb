@@ -24,47 +24,59 @@ class Hand
   end
 
   def points
-    points = 0
-    suits_hash = Hash.new(0)
-    value_hash = Hash.new(0)
+    @suits_hash = Hash.new(0)
+    @values_hash = Hash.new(0)
     @hand.each do |card|
-      suits_hash[card.suit] += 1
-      value_hash[card.value] += 1
+      @suits_hash[card.suit] += 1
+      @values_hash[card.value] += 1
     end
 
-    #refactor below into separate methods for each type of hand
-    first_suit = @hand[0].suit
-    if @hand.all? {|card| card.suit == first_suit}
-      if @hand.all? {|card| card.value != :ace }
-        card_values = []
-        @hand.each { |card| card_values << card.poker_value }
-        card_values.sort!
-        if card_values.last - card_values.first == 4
-          points = 8 #straight flush
-        else
-          points = 5 #flush
+    return 8 if straight_flush?
+    return 7 if four_of_a_kind?
+    return 6 if full_house?
+    return 5 if flush?
+    return 4 if straight?
+    return 3 if three_of_a_kind?
+    return 2 if two_pair?
+    return 1 if one_pair?
+    0
+  end
+
+  def straight_flush?
+    @suits_hash.values.max == 5 && straight?
+  end
+
+  def four_of_a_kind?
+    @values_hash.values.max == 4
+  end
+
+  def full_house?
+    @values_hash.values.max == 3 && @values_hash.values.include?(2)
+  end
+
+  def flush?
+    @suits_hash.values.max == 5
+  end
+
+  def straight?
+    if @hand.all? {|card| card.value != :ace }
+      card_values = []
+      @hand.each { |card| card_values << card.poker_value }
+      card_values.sort!
+      return true if card_values.last - card_values.first == 4
+    else
+      if @hand.all? do |card|
+        card.value == :ace || card.value == :deuce || card.value == :three ||
+        card.value == :four || card.value == :five
         end
-      else
-        if @hand.all? do |card|
-          card.value == :ace || card.value == :deuce || card.value == :three ||
-          card.value == :four || card.value == :five
-          end
-          points = 8 #straight flush
-        elsif @hand.all? do |card|
-          card.value == :ace || card.value == :king || card.value == :queen ||
-          card.value == :jack || card.value == :ten
-          end
-          points = 8 #straight flush
-        else
-          points = 5 #flush
+        return true
+      elsif @hand.all? do |card|
+        card.value == :ace || card.value == :king || card.value == :queen ||
+        card.value == :jack || card.value == :ten
         end
+        return true
       end
-      #refactor above
-    elsif value_hash.values.max == 4
-      points = 7
-    elsif value_hash.values.max == 3 && value_hash.values.include?(2)
-      points = 6
     end
-    points
+    false
   end
 end

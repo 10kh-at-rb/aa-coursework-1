@@ -134,6 +134,39 @@ describe Hand do
         expect(flush_hand.points).to eq(5)
     end
 
+    it "should return 4 points for a straight with no aces" do
+      straight_hand = Hand.new([
+        Card.new(:clubs, :eight),
+        Card.new(:hearts, :seven),
+        Card.new(:diamonds, :six),
+        Card.new(:spades, :five),
+        Card.new(:clubs, :four)], Deck.new(Deck.start_deck))
+
+        expect(straight_hand.points).to eq(4)
+    end
+
+    it "should return 4 points for a straight with low ace" do
+      straight_hand = Hand.new([
+        Card.new(:clubs, :ace),
+        Card.new(:hearts, :deuce),
+        Card.new(:diamonds, :three),
+        Card.new(:spades, :five),
+        Card.new(:clubs, :four)], Deck.new(Deck.start_deck))
+
+        expect(straight_hand.points).to eq(4)
+    end
+
+    it "should return 4 points for a straight with high ace" do
+      straight_hand = Hand.new([
+        Card.new(:clubs, :ace),
+        Card.new(:hearts, :queen),
+        Card.new(:diamonds, :king),
+        Card.new(:spades, :jack),
+        Card.new(:clubs, :ten)], Deck.new(Deck.start_deck))
+
+        expect(straight_hand.points).to eq(4)
+    end
+
   end
 
 end
