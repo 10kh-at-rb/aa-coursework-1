@@ -79,4 +79,16 @@ class Hand
     end
     false
   end
+
+  def three_of_a_kind?
+    @values_hash.values.max == 3
+  end
+
+  def two_pair?
+    @values_hash.values.count(2) == 2
+  end
+
+  def one_pair?
+    @values_hash.values.count(2) == 1
+  end
 end

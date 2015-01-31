@@ -167,6 +167,40 @@ describe Hand do
         expect(straight_hand.points).to eq(4)
     end
 
+    it "should return 3 points for a three of a kind" do
+      three_of_a_hand = Hand.new([
+        Card.new(:clubs, :ace),
+        Card.new(:hearts, :nine),
+        Card.new(:diamonds, :nine),
+        Card.new(:spades, :nine),
+        Card.new(:clubs, :ten)], Deck.new(Deck.start_deck))
+
+        expect(three_of_a_hand.points).to eq(3)
+    end
+
+
+    it "should return 2 points for two pairs" do
+      two_pair_hand = Hand.new([
+        Card.new(:clubs, :ace),
+        Card.new(:hearts, :nine),
+        Card.new(:diamonds, :nine),
+        Card.new(:spades, :eight),
+        Card.new(:clubs, :eight)], Deck.new(Deck.start_deck))
+
+        expect(two_pair_hand.points).to eq(2)
+    end
+
+    it "should return 1 point for one pair" do
+      one_pair_hand = Hand.new([
+        Card.new(:clubs, :ace),
+        Card.new(:hearts, :nine),
+        Card.new(:diamonds, :seven),
+        Card.new(:spades, :eight),
+        Card.new(:clubs, :eight)], Deck.new(Deck.start_deck))
+
+        expect(one_pair_hand.points).to eq(1)
+    end
+
   end
 
 end
