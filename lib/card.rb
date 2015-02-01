@@ -37,7 +37,8 @@ class Card
     :ten   => 10,
     :jack  => 11,
     :queen => 12,
-    :king  => 13
+    :king  => 13,
+    :ace   => 14
   }
 
   # Returns an array of all suits.
@@ -61,9 +62,7 @@ class Card
   end
 
   def poker_value
-    raise "ace has special value" if value == :ace
-
-    POKER_VALUE[value]
+    POKER_VALUE[@value]
   end
 
   # Compares two cards to see if they're equal in suit & value.
@@ -76,6 +75,6 @@ class Card
   end
 
   def to_s
-    VALUE_STRINGS[value] + SUIT_STRINGS[suit]
+    VALUE_STRINGS[@value] + SUIT_STRINGS[@suit]
   end
 end

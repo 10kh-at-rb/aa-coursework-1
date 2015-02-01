@@ -91,4 +91,22 @@ class Hand
   def one_pair?
     @values_hash.values.count(2) == 1
   end
+
+  def loses_to?(other_hand)
+    if points < other_hand.points
+      return true
+    elsif points == 0 && other_hand.points == 0
+      hand_values = []
+      other_hand_values = []
+      @hand.each {|card| hand_values << card.poker_value }
+      other_hand.hand.each {|card| other_hand_values << card.poker_value}
+      if hand_values.max < other_hand_values.max
+        return true
+      else
+        return false
+      end
+    else
+      return false
+    end
+  end
 end
