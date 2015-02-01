@@ -1,5 +1,5 @@
 class Hand
-  attr_reader :hand
+  attr_accessor :hand
 
   def initialize(hand, deck)
     @hand = hand
@@ -7,10 +7,16 @@ class Hand
   end
 
   def receive(new_cards)
+    if new_cards.count + @hand.count > 5
+      raise "player cannot have more than 5 cards"
+    end
     @hand += new_cards
   end
 
   def discard(card_indices)
+    if card_indices.count > 3
+      raise "player can only discard up to 3 cards"
+    end
     discard_pile = []
     card_indices.each do |i|
       discard_pile << @hand[i]
@@ -31,6 +37,7 @@ class Hand
       @values_hash[card.value] += 1
     end
 
+    return 9 if royal_flush?
     return 8 if straight_flush?
     return 7 if four_of_a_kind?
     return 6 if full_house?
@@ -40,6 +47,13 @@ class Hand
     return 2 if two_pair?
     return 1 if one_pair?
     0
+  end
+
+  def royal_flush?
+    @suits_hash.values.max == 5 && @hand.all? do |card|
+      card.value == :ace || card.value == :king || card.value == :queen ||
+      card.value == :jack || card.value == :ten
+      end
   end
 
   def straight_flush?

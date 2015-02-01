@@ -40,6 +40,10 @@ describe Hand do
         expect(hand.hand.count).to eq(5)
     end
 
+    it "raises an error if more than 3 cards are selected to discard" do
+      expect {hand.discard([0,2,3,4])}.to raise_error
+    end
+
     it "returns discarded pile correctly" do
       returned_cards = hand.discard([0,2,4])
       expect(returned_cards[0].suit).to eq(:clubs)
@@ -65,9 +69,31 @@ describe Hand do
       expect(two_card_hand.hand.count).to eq(5)
     end
 
+    it "raises an error if player would have more than 5 cards" do
+      new_cards = [
+        Card.new(:diamonds, :four),
+        Card.new(:clubs, :nine),
+        Card.new(:diamonds, :seven),
+        Card.new(:spades, :six)
+      ]
+
+      expect {two_card_hand.receive(new_cards)}.to raise_error
+    end
+
   end
 
   describe "#points" do
+    it "returns 9 points for a royal flush" do
+        straight_flush_hand = Hand.new([
+        Card.new(:clubs, :ace),
+        Card.new(:clubs, :king),
+        Card.new(:clubs, :jack),
+        Card.new(:clubs, :queen),
+        Card.new(:clubs, :ten)], Deck.new(Deck.start_deck))
+
+      expect(straight_flush_hand.points).to eq(9)
+    end
+    
     it "returns 8 points for a straight flush with no aces" do
         straight_flush_hand = Hand.new([
         Card.new(:clubs, :five),
@@ -86,17 +112,6 @@ describe Hand do
         Card.new(:clubs, :three),
         Card.new(:clubs, :deuce),
         Card.new(:clubs, :five)], Deck.new(Deck.start_deck))
-
-      expect(straight_flush_hand.points).to eq(8)
-    end
-
-    it "returns 8 points for a straight flush with high ace" do
-        straight_flush_hand = Hand.new([
-        Card.new(:clubs, :ace),
-        Card.new(:clubs, :king),
-        Card.new(:clubs, :jack),
-        Card.new(:clubs, :queen),
-        Card.new(:clubs, :ten)], Deck.new(Deck.start_deck))
 
       expect(straight_flush_hand.points).to eq(8)
     end
