@@ -71,7 +71,9 @@ VALUES
   (2, 2, 1, "replying to your reply!");
 
 INSERT INTO
-  question_likes (user_id, question_id)
+  question_likes (question_id, user_id)
 VALUES
   (1, 2),
-  (3, 1);
+  (1, 3),
+  (2, 3),
+  (2, 2);
