@@ -16,7 +16,39 @@ class QuestionsDatabase < SQLite3::Database
 
 end
 
-class User
+class TableClass
+
+  def save
+    instance_variables = self.instance_variables.map{|var| self.instance_variable_get(var)}
+    variables_no_sym = self.instance_variables.map{|var| var.to_s[1..-1]}
+    questions_arr = Array.new(variables_no_sym.length-2){"?"}
+
+    if @id.nil?
+      QuestionsDatabase.instance.execute(<<-SQL, instance_variables[1..-2])
+        INSERT INTO
+          #{@table} (#{variables_no_sym[1..-2].join(', ')})
+        VALUES
+          (#{questions_arr.join(", ")})
+      SQL
+
+      @id = QuestionsDatabase.instance.last_insert_row_id
+    else
+      QuestionsDatabase.instance.execute(<<-SQL, instance_variables[1..-2], instance_variables[0])
+        UPDATE
+          #{@table}
+        SET
+          #{variables_no_sym[1..-2].join(' = ?, ')} = ?
+        WHERE
+          id = ?
+      SQL
+    end
+
+  end
+
+
+end
+
+class User < TableClass
   def self.find_by_id(id)
     results = QuestionsDatabase.instance.execute(<<-SQL, id)
       SELECT
@@ -49,6 +81,7 @@ class User
     @id = options['id']
     @fname = options['fname']
     @lname = options['lname']
+    @table = 'users'
   end
 
   def authored_questions
@@ -99,32 +132,10 @@ class User
     results[0]['average']
   end
 
-  def save
-    if @id.nil?
-      QuestionsDatabase.instance.execute(<<-SQL, @fname, @lname)
-        INSERT INTO
-          users (fname, lname)
-        VALUES
-          (?, ?)
-      SQL
-
-      @id = QuestionsDatabase.instance.last_insert_row_id
-    else
-      QuestionsDatabase.instance.execute(<<-SQL, @fname, @lname, @id)
-        UPDATE
-          users
-        SET
-          fname = ?, lname = ?
-        WHERE
-          id = ?
-      SQL
-    end
-
-  end
 
 end
 
-class Question
+class Question < TableClass
 
   def self.find_by_id(id)
     results = QuestionsDatabase.instance.execute(<<-SQL, id)
@@ -166,6 +177,7 @@ class Question
     @title = options['title']
     @body = options['body']
     @user_id = options['user_id']
+    @table = 'questions'
   end
 
   def author
@@ -206,33 +218,33 @@ class Question
     QuestionLike.num_likes_for_question_id(@id)
   end
 
-  def save
-    if @id.nil?
-      QuestionsDatabase.instance.execute(<<-SQL, @title, @body, @user_id)
-        INSERT INTO
-          questions (title, body, user_id)
-        VALUES
-          (?, ?, ?)
-      SQL
-
-      @id = QuestionsDatabase.instance.last_insert_row_id
-    else
-      QuestionsDatabase.instance.execute(<<-SQL, @title, @body, @user_id, @id)
-        UPDATE
-          questions
-        SET
-          title = ?, body = ?, user_id = ?
-        WHERE
-          id = ?
-      SQL
-    end
-
-  end
+  # def save
+  #   if @id.nil?
+  #     QuestionsDatabase.instance.execute(<<-SQL, @title, @body, @user_id)
+  #       INSERT INTO
+  #         questions (title, body, user_id)
+  #       VALUES
+  #         (?, ?, ?)
+  #     SQL
+  #
+  #     @id = QuestionsDatabase.instance.last_insert_row_id
+  #   else
+  #     QuestionsDatabase.instance.execute(<<-SQL, @title, @body, @user_id, @id)
+  #       UPDATE
+  #         questions
+  #       SET
+  #         title = ?, body = ?, user_id = ?
+  #       WHERE
+  #         id = ?
+  #     SQL
+  #   end
+  #
+  # end
 
 
 end
 
-class Reply
+class Reply < TableClass
 
   def self.find_by_id(id)
     results = QuestionsDatabase.instance.execute(<<-SQL, id)
@@ -282,6 +294,7 @@ class Reply
     @parent_id = options['parent_id']
     @user_id = options['user_id']
     @body = options['body']
+    @table = "replies"
   end
 
   def author
@@ -338,35 +351,11 @@ class Reply
     results.map {|result| Reply.new(result)}
   end
 
-  def save
-    variables = self.instance_variables.map{|var| var.to_s}
-    variables_no_sym = self.instance_variables.map{|var| var.to_s[1..-1]}
 
-    if @id.nil?
-      QuestionsDatabase.instance.execute(<<-SQL, variables[1..-1])
-        INSERT INTO
-          replies (question_id, parent_id, user_id, body)
-        VALUES
-          (?, ?, ?, ?)
-      SQL
-
-      @id = QuestionsDatabase.instance.last_insert_row_id
-    else
-      QuestionsDatabase.instance.execute(<<-SQL, @question_id, @parent_id, @user_id, @body, @id)
-        UPDATE
-          replies
-        SET
-          question_id = ?, parent_id = ?, user_id = ?, body = ?
-        WHERE
-          id = ?
-      SQL
-    end
-
-  end
 
 end
 
-class QuestionFollower
+class QuestionFollower < TableClass
 
   def self.followers_for_question_id(question_id)
     results = QuestionsDatabase.instance.execute(<<-SQL, question_id)
@@ -435,10 +424,11 @@ class QuestionFollower
     @id = options['id']
     @question_id = options['question_id']
     @user_id = options['user_id']
+    @table = 'question_followers'
   end
 end
 
-class QuestionLike
+class QuestionLike < TableClass
 
   def self.find_by_id(id)
     results = QuestionsDatabase.instance.execute(<<-SQL, id)
@@ -523,5 +513,6 @@ class QuestionLike
     @id = options['id']
     @question_id = options['question_id']
     @user_id = options['user_id']
+    @table = 'question_likes'
   end
 end
