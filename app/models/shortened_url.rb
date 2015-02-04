@@ -55,7 +55,10 @@ class ShortenedURL < ActiveRecord::Base
   private
 
   def max_submissions
-    recent_subs = self.class.where(created_at: (1.minutes.ago..0.minutes.ago), submitter_id: submitter_id).count
+    recent_subs = ShortenedURL.where(
+      created_at: (1.minutes.ago..Time.now),
+      submitter_id: submitter_id
+    ).count
     if recent_subs > 5
      errors[:submitter_id] << "you cannot enter more than 5 links per minute"
     end
