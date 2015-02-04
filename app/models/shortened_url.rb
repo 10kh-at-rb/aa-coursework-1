@@ -1,6 +1,8 @@
 class ShortenedURL < ActiveRecord::Base
   validates :short_url, uniqueness: true
   validates :submitter_id, :long_url, :short_url, presence: true
+  validates :long_url, length: { maximum: 255 }
+  validate :max_submissions
 
   belongs_to(
     :submitter,
@@ -49,4 +51,15 @@ class ShortenedURL < ActiveRecord::Base
   def num_recent_uniques
     self.visit.where(created_at: (10.minutes.ago..0.minutes.ago)).count
   end
+
+  private
+
+  def max_submissions
+    recent_subs = self.class.where(created_at: (1.minutes.ago..0.minutes.ago), submitter_id: submitter_id).count
+    if recent_subs > 5
+     errors[:submitter_id] << "you cannot enter more than 5 links per minute"
+    end
+
+  end
+
 end
