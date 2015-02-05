@@ -13,10 +13,12 @@ class Question < ActiveRecord::Base
     :answer_choices,
     class_name: "AnswerChoice",
     foreign_key: :question_id,
-    primary_key: :id
+    primary_key: :id,
+    dependent: :destroy
   )
 
-  has_many :responses, through: :answer_choices, source: :responses
+  has_many :responses, through: :answer_choices, source: :responses,
+           dependent: :destroy
 
   def results
     answer_frequency = self.answer_choices

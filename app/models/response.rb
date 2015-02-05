@@ -3,6 +3,8 @@ class Response < ActiveRecord::Base
   validate :respondent_has_not_already_answered_question
   validate :not_author_of_poll
 
+  after_destroy :log_destroy_action
+
   belongs_to(
     :answer_choice,
     class_name: "AnswerChoice",
@@ -19,7 +21,10 @@ class Response < ActiveRecord::Base
 
   has_one :question, through: :answer_choice, source: :question
 
-
+  def log_destroy_action
+    puts "Response destroyed!"
+  end
+  
   def sibling_responses
     self.question.responses.where([':id IS NULL OR responses.id != :id', id: self.id])
   end
