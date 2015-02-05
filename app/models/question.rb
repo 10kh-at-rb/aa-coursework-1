@@ -16,4 +16,6 @@ class Question < ActiveRecord::Base
     primary_key: :id
   )
 
+  has_many :responses, through: :answer_choices, source: :responses
+
 end
