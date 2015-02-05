@@ -1,4 +1,7 @@
 class Response < ActiveRecord::Base
+  validates :user_id, :answer_choice_id, presence: true
+
+
   belongs_to(
     :answer_choice,
     class_name: "AnswerChoice",

@@ -1,4 +1,7 @@
 class Question < ActiveRecord::Base
+  validates :body, :poll_id, presence: true
+
+
   belongs_to(
     :poll,
     class_name: "Poll",

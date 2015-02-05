@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+  validates :username, presence: true
+
   has_many(
     :authored_polls,
     class_name: "Poll",
