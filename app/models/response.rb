@@ -1,6 +1,7 @@
 class Response < ActiveRecord::Base
   validates :user_id, :answer_choice_id, presence: true
   validate :respondent_has_not_already_answered_question
+  validate :not_author_of_poll
 
   belongs_to(
     :answer_choice,
@@ -32,6 +33,14 @@ class Response < ActiveRecord::Base
     current_user = self.user_id
     unless self.sibling_responses.where(user_id: current_user).empty?
       errors[:base] << 'Already responded to this question.'
+    end
+  end
+
+  def not_author_of_poll
+    current_user = self.user_id
+
+    if self.question.poll.author.id == current_user
+      errors[:base] << "Author cannot respond to own poll."
     end
   end
 
