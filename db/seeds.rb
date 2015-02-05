@@ -5,7 +5,7 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
-ActiveRecord::Base.transaction
+ActiveRecord::Base.transaction do
   u1 = User.create!(username: 'ctimpone')
   u2 = User.create!(username: 'agremmo')
   u3 = User.create!(username: 'jtamboer')
