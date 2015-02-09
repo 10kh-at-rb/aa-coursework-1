@@ -1,6 +1,7 @@
 class ContactsController < ApplicationController
   def index
-    render json: Contact.all
+    user = User.find(params[:user_id])
+    render json: [user.contacts, user.shared_contacts]
   end
 
   def create
