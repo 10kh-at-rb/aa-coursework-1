@@ -3,6 +3,15 @@ class Cat < ActiveRecord::Base
   validates :sex, inclusion: { in: ["M", "F"], message: "Sex must be 'M' or 'F'" }
   validates :color, inclusion: { in: ['Black', 'White', 'Brown', 'Orange'], message: "Color must be a valid color." }
 
+  has_many(
+    :rental_requests,
+    class_name: "CatRentalRequest",
+    foreign_key: :cat_id,
+    primary_key: :id,
+    dependent: :destroy
+  )
+
+  private
   def age
     age = Date.today.year - self.birth_date.year
     months = Date.today.month - self.birth_date.month

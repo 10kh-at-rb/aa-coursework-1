@@ -3,9 +3,21 @@ class CatRentalRequest < ActiveRecord::Base
   validates :status, inclusion: { in: %w(APPROVED PENDING DENIED),
                                   message: "Status must be valid."}
   validate :overlapping_approved_requests
+  after_initialize :set_pending
+
+  belongs_to(
+    :cat,
+    class_name: "Cat",
+    foreign_key: :cat_id,
+    primary_key: :id
+  )
+
+  def set_pending
+    self.status ||= 'PENDING'
+  end
 
   private
-  
+
   def overlapping_requests
     results = CatRentalRequest.all.where(['id != :id
       AND :cat_id = cat_id
