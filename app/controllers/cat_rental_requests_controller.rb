@@ -16,7 +16,16 @@ class CatRentalRequestsController < ApplicationController
     else
       render :new
     end
+  end
 
+  def approve
+    CatRentalRequest.find(params[:id]).approve!
+    redirect_to cats_url
+  end
+
+  def deny
+    CatRentalRequest.find(params[:id]).deny!
+    redirect_to cats_url
   end
 
   private

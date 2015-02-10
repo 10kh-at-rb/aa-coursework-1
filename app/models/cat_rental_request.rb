@@ -27,6 +27,10 @@ class CatRentalRequest < ActiveRecord::Base
     self.update(status: 'DENIED')
   end
 
+  def pending?
+    self.status == "PENDING"
+  end
+
   def overlapping_pending_requests
     results = overlapping_requests.where("status = 'PENDING'")
   end
