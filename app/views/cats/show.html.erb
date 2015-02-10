@@ -13,3 +13,18 @@
     <td><%= @cat.description %>
   </tr>
 </table>
+<br>
+
+<table border="1">
+  <caption>Rental Requests</caption>
+  <thead>
+    <th>Start Date
+    <th>End Date
+  </thead>
+  <% @sorted_requests.each do |request| %>
+  <tr>
+    <td><%= request.start_date %>
+    <td><%= request.end_date %>
+  </tr>
+  <% end %>
+</table>

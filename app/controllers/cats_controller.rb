@@ -8,7 +8,8 @@ class CatsController < ApplicationController
 
   def show
     @cat = Cat.find(params[:id])
-
+    @sorted_requests = @cat.rental_requests.order(:start_date)
+    # @sorted_requests = requests.sort_by {|request| request[:start_date]}
     render :show
   end
 

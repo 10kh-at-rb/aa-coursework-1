@@ -11,7 +11,7 @@ class Cat < ActiveRecord::Base
     dependent: :destroy
   )
 
-  private
+
   def age
     age = Date.today.year - self.birth_date.year
     months = Date.today.month - self.birth_date.month

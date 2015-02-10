@@ -16,7 +16,24 @@ class CatRentalRequest < ActiveRecord::Base
     self.status ||= 'PENDING'
   end
 
+  def approve!
+    CatRentalRequest.transaction do
+      self.update(status: "APPROVED")
+      overlapping_pending_requests.update_all(status: "DENIED")
+    end
+  end
+
+  def deny!
+    self.update(status: 'DENIED')
+  end
+
+  def overlapping_pending_requests
+    results = overlapping_requests.where("status = 'PENDING'")
+  end
+
   private
+
+
 
   def overlapping_requests
     results = CatRentalRequest.all.where(['id != :id
