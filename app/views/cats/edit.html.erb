@@ -1,8 +1,8 @@
-<h2>Cat Form</h2>
+<h2>Cat Edit Form</h2>
 <% @cat.errors.full_messages.each do |error| %>
   <li><%= error %></li>
 <% end %>
-<form action="<%= cats_url %>" method="POST">
+<form action="<%= cat_url(@cat) %>" method="POST">
   <input type="hidden" name="_method" value="PATCH">
 
   <label for="name">Name:</label>
