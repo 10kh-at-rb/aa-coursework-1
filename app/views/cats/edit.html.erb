@@ -1,0 +1,40 @@
+<h2>Cat Form</h2>
+<% @cat.errors.full_messages.each do |error| %>
+  <li><%= error %></li>
+<% end %>
+<form action="<%= cats_url %>" method="POST">
+  <input type="hidden" name="_method" value="PATCH">
+
+  <label for="name">Name:</label>
+  <input type="text" name="cat[name]" id="name" value="<%= @cat.name %>">
+  <br>
+
+  <label for="birth_date">Birth Date:</label>
+  <input type="date" name="cat[birth_date]"
+    id="birth_date" value="<%= @cat.birth_date %>">
+  <br>
+
+  <label for="color">Color:</label>
+  <select name="cat[color]" id="color">
+    <option value="Black" <%= "selected" if @cat.color == "Black" %>>Black</option>
+    <option value="White" <%= "selected" if @cat.color == "White" %>>White</option>
+    <option value="Brown" <%= "selected" if @cat.color == "Brown" %>>Brown</option>
+    <option value="Orange"<%= "selected" if @cat.color == "Orange" %>>Orange</option>
+  </select>
+  <br>
+
+  <label for="sex">Sex:</label>
+  <input type="radio" name="cat[sex]" id="male" value="M" <%= "checked=\"checked\"" if @cat.sex == "M" %>>
+  <label for="male">Male</label>
+
+  <input type="radio" name="cat[sex]" id="female" value="F" <%= "checked=\"checked\"" if @cat.sex == "F" %>>
+  <label for="female">Female</label>
+  <br>
+
+  <label for="description">Description:</label>
+  <textarea name="cat[description]" id="description"><%= @cat.description %></textarea>
+  <br>
+
+  <button name="submit">Submit</button>
+
+</form>
