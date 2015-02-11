@@ -4,6 +4,22 @@
   <title>NinetyNineCats</title>
 </head>
 <body>
+<p>
+<% if current_user %>
+  <%= "Hello #{current_user.user_name}" %>
+  <form action="<%= session_url %>" method="POST">
+    <input type="hidden"
+         name="authenticity_token"
+         value="<%= form_authenticity_token %>">
+    <input type="hidden" name="_method" value="DELETE">
+      <button>Logout</button>
+  </form>
+<% else %>
+  <%= link_to "Log In", new_session_url %> or
+  <%= link_to "Register", new_user_url %>
+<% end %>
+
+</p>
 
 <%= yield %>
 
