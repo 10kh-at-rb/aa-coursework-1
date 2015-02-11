@@ -23,6 +23,25 @@
 </p>
 
 <%= yield %>
-
+<% if current_user %>
+<table border="1">
+  <caption>Logged In Sessions</caption>
+  <thead>
+    <th>Device
+    <th>Browser
+    <th>IP
+    <th>
+  </thead>
+  <% current_user.session_tokens.each do |session| %>
+  <tr>
+    <td><%= session.device %>
+    <td><%= session.browser %>
+    <td><%= session.ip %>
+    <td><%   
+  </tr>
+  <% end %>
+</table>
+<br>
+<% end %>
 </body>
 </html>

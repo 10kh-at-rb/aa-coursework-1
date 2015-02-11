@@ -1,3 +1,7 @@
+<% session[:browser] = browser.name %>
+<% session[:device] = browser.platform %>
+<% session[:ip] = request.env["HTTP_X_FORWARDED_FOR"] %>
+
 <form action="<%= users_url %>" method="POST">
   <input type="hidden"
          name="authenticity_token"

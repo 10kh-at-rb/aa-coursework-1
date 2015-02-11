@@ -3,15 +3,21 @@ require 'bcrypt'
 class User < ActiveRecord::Base
   validates(:user_name,
             :password_digest,
-            :session_token,
             presence: true)
-  validates :session_token, uniqueness: true
+  # validates :session_token, uniqueness: true
   validates :password, length: {minimum: 8}, allow_nil: true
-  after_initialize :ensure_session_token
+  # after_initialize :ensure_session_token
 
   has_many(
     :cats,
     class_name: "Cat",
+    foreign_key: :user_id,
+    primary_key: :id
+  )
+
+  has_many(
+    :session_tokens,
+    class_name: "SessionToken",
     foreign_key: :user_id,
     primary_key: :id
   )
@@ -29,15 +35,23 @@ class User < ActiveRecord::Base
     @user
   end
 
-  def ensure_session_token
-    self.session_token ||= SecureRandom::urlsafe_base64
-  end
+  # def ensure_session_token
+  #   self.session_token ||= SecureRandom::urlsafe_base64
+  # end
 
-  def reset_session_token!
-    self.session_token = SecureRandom::urlsafe_base64
-
-    self.save
-  end
+  # def reset_session_token!
+  #   # token = SessionToken.find_by(session_token: session[:session_token])
+  #   # if !token.nil?
+  #     # token.session_token = SecureRandom::urlsafe_base64
+  #   # else
+  #     # token = SessionToken.new(@user.id, SecureRandom::urlsafe_base64)
+  #   # end
+  #   # token.save
+  #   # return token.session_token
+  #   self.session_token = SecureRandom::urlsafe_base64
+  #
+  #   self.save
+  # end
 
   def password=(password)
     @password = password

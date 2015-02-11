@@ -8,12 +8,19 @@ class ApplicationController < ActionController::Base
 
   def current_user
     return nil unless session[:session_token]
-    @current_user ||= User.find_by(session_token: session[:session_token])
+    @current_user ||= SessionToken
+      .find_by(session_token: session[:session_token]).user
   end
 
   def login_user!
-    @user.reset_session_token!
-    session[:session_token] = @user.session_token
+    token = SessionToken.new(user_id: @user.id)
+    # @user.reset_session_token!
+    token.device = session[:device]
+    token.browser = session[:browser]
+    token.ip = session[:ip]
+    
+    token.save
+    session[:session_token] = token.session_token
     redirect_to cats_url
   end
 
