@@ -9,6 +9,20 @@ class User < ActiveRecord::Base
   validates :password, length: {minimum: 8}, allow_nil: true
   after_initialize :ensure_session_token
 
+  has_many(
+    :cats,
+    class_name: "Cat",
+    foreign_key: :user_id,
+    primary_key: :id
+  )
+
+  has_many(
+    :cat_rental_requests,
+    class_name: "CatRentalRequest",
+    foreign_key: :user_id,
+    primary_key: :id
+  )
+
   def self.find_by_credentials(user_name, password)
     @user = User.find_by(user_name: user_name)
     return nil unless @user && @user.is_password?(password)

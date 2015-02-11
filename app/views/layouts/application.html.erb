@@ -12,10 +12,11 @@
          name="authenticity_token"
          value="<%= form_authenticity_token %>">
     <input type="hidden" name="_method" value="DELETE">
+    <%= link_to "Rent a Cat!", new_cat_rental_request_url %>
       <button>Logout</button>
   </form>
 <% else %>
-  <%= link_to "Log In", new_session_url %> or
+  <a href="<%= new_session_url %>">Log In</a> or
   <%= link_to "Register", new_user_url %>
 <% end %>
 

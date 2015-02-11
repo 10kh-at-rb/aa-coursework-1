@@ -1,5 +1,5 @@
 class CatRentalRequest < ActiveRecord::Base
-  validates :cat_id, :start_date, :end_date, :status, presence: true
+  validates :cat_id, :start_date, :end_date, :status, :user_id, presence: true
   validates :status, inclusion: { in: %w(APPROVED PENDING DENIED),
                                   message: "Status must be valid."}
   validate :overlapping_approved_requests
@@ -9,6 +9,13 @@ class CatRentalRequest < ActiveRecord::Base
     :cat,
     class_name: "Cat",
     foreign_key: :cat_id,
+    primary_key: :id
+  )
+
+  belongs_to(
+    :user,
+    class_name: "User",
+    foreign_key: :user_id,
     primary_key: :id
   )
 
