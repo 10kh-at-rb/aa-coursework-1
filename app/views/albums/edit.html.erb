@@ -6,22 +6,17 @@
            name="authenticity_token"
            value="<%= form_authenticity_token %>">
 
- <label for="name">Name:</label>
- <input type="text"
+  <label for="name">Name:</label>
+  <input type="text"
          name="album[name]"
          id="name"
          value="<%= @album.name %>">
- <br>
+  <br>
 
- <label for="album">Band:</label>
- <select id="album" name="album[album_id]">
-
- </select>
-
- <label for="album_type">Album Type:</label>
- <input type="radio" name="album[album_type]" value="Studio">
- <input type="radio" name="album[album_type]" value="Live">
- <br>
+  <label for="album_type">Album Type:</label>
+  Studio <input type="radio" name="album[album_type]" value="Studio">
+  Live <input type="radio" name="album[album_type]" value="Live">
+  <br>
 
   <button>Edit Album!</button>
 </form>

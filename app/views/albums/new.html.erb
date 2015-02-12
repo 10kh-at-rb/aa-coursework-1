@@ -1,4 +1,4 @@
-<form action="<%= albums_url %>" method="POST">
+<form action="<%= band_albums_url %>" method="POST">
   <input type="hidden"
            name="authenticity_token"
            value="<%= form_authenticity_token %>">
@@ -10,14 +10,9 @@
           value="<%= @album.name %>">
   <br>
 
-  <label for="album">Album:</label>
-  <select id="album" name="album[album_id]">
-
-  </select>
-
   <label for="album_type">Album Type:</label>
-  <input type="radio" name="album[album_type]" value="Regular">
-  <input type="radio" name="album[album_type]" value="Bonus">
+  Studio <input type="radio" name="album[album_type]" value="Studio">
+  Live <input type="radio" name="album[album_type]" value="Live">
   <br>
 
   <button>Create Album!</button>

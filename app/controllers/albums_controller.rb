@@ -1,6 +1,7 @@
 class AlbumsController < ApplicationController
   def create
     @album = Album.new(album_params)
+    @album.band_id = params[:band_id]
 
     if @album.save
       redirect_to album_url(@album)
@@ -35,7 +36,10 @@ class AlbumsController < ApplicationController
   end
 
   def destroy
-    Album.find(params[:id]).destroy
+    @album = Album.find(params[:id])
+    @album.destroy
+
+    redirect_to band_url(@album.band_id)
   end
 
   private

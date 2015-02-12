@@ -6,26 +6,21 @@
            name="authenticity_token"
            value="<%= form_authenticity_token %>">
 
- <label for="name">Name:</label>
- <input type="text"
-         name="track[name]"
-         id="name"
-         value="<%= @track.name %>">
- <br>
+   <label for="name">Name:</label>
+   <input type="text"
+           name="track[name]"
+           id="name"
+           value="<%= @track.name %>">
+   <br>
 
- <label for="album">Album:</label>
- <select id="album" name="track[album_id]">
+   <label for="track_type">Track Type:</label>
+   Regular <input type="radio" name="track[track_type]" value="Regular">
+   Bonus <input type="radio" name="track[track_type]" value="Bonus">
+   <br>
 
- </select>
-
- <label for="track_type">Track Type:</label>
- <input type="radio" name="track[track_type]" value="Regular">
- <input type="radio" name="track[track_type]" value="Bonus">
- <br>
-
- <label for="lyrics">Lyrics:</label>
- <textarea name="track[lyrics]" id="lyrics"><%= @track.lyrics %></textarea>
- <br>
+   <label for="lyrics">Lyrics:</label>
+   <textarea name="track[lyrics]" id="lyrics"><%= @track.lyrics %></textarea>
+   <br>
 
   <button>Edit Track!</button>
 </form>
