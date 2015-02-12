@@ -3,7 +3,8 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
 
     if @user.save
-      log_in_user!(@user)
+      flash[:message] = "Please check your email for your activation link."
+      redirect_to bands_url
     else
       render :new
     end
@@ -19,6 +20,18 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
 
     render :show
+  end
+
+  def activate
+    @user = User.find_by(activation_token: params[:activation_token])
+    if @user
+      @user.activated = true
+      @user.save
+      log_in_user!(@user)
+    else
+      flash[:message] = "Invalid Activation Token"
+      redirect_to bands_url
+    end
   end
 
   private

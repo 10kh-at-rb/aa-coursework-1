@@ -1,7 +1,15 @@
 class User < ActiveRecord::Base
-  validates :email, :password_digest, :session_token, presence: true
-  validates :email, :session_token, uniqueness: true, length: {minimum: 8}
-  after_initialize :ensure_session_token
+  validates(
+    :email,
+    :password_digest,
+    :session_token,
+    :activation_token,
+    presence: true
+  )
+
+  validates :email, uniqueness: true, length: {minimum: 8}
+  validates :session_token, :activation_token, uniqueness: true
+  after_initialize :ensure_session_token, :ensure_activation_token
 
   has_many(
     :notes,
@@ -13,6 +21,7 @@ class User < ActiveRecord::Base
   def self.generate_session_token
     SecureRandom::urlsafe_base64
   end
+
 
   def self.find_by_credentials(email, password)
     user = User.find_by(email: email)
@@ -37,5 +46,9 @@ class User < ActiveRecord::Base
 
   def ensure_session_token
     self.session_token ||= User.generate_session_token
+  end
+
+  def ensure_activation_token
+    self.activation_token ||= User.generate_session_token
   end
 end

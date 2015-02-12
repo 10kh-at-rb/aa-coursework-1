@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
-  resources :users, only: [:create, :new, :show]
+  resources :users, only: [:create, :new, :show] do
+    collection do
+      get 'activate'
+    end
+  end
 
   resource :session, only: [:create, :new, :destroy]
 

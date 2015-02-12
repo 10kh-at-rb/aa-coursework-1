@@ -6,6 +6,11 @@
 </head>
 <body>
 
+<% if flash[:message] %>
+  <%= flash[:message] %>
+  <br>
+<% end %>
+
 <% if logged_in? %>
   <form action="<%= session_url %>" method="POST">
     <input type="hidden"

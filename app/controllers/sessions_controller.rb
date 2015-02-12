@@ -5,7 +5,12 @@ class SessionsController < ApplicationController
     if @user.nil?
       render :new
     else
-      log_in_user!(@user)
+      if @user.activated
+        log_in_user!(@user)
+      else
+        flash[:message] = "Your account has not yet been activated."
+        redirect_to new_session_url
+      end
     end
   end
 
