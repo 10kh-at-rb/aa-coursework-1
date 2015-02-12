@@ -17,4 +17,8 @@ class ApplicationController < ActionController::Base
     session[:session_token] = user.session_token
     redirect_to user_url(user)
   end
+
+  def redirect_if_not_logged_in
+    redirect_to bands_url unless logged_in?
+  end
 end

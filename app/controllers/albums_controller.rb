@@ -1,4 +1,6 @@
 class AlbumsController < ApplicationController
+  before_action :redirect_if_not_logged_in, except: [:index, :show]
+  
   def create
     @album = Album.new(album_params)
     @album.band_id = params[:band_id]
@@ -30,9 +32,12 @@ class AlbumsController < ApplicationController
 
   def update
     @album = Album.find(params[:id])
-    @album.update(album_params)
 
-    redirect_to album_url(@album)
+    if @album.update(album_params)
+      redirect_to album_url(@album)
+    else
+      render :edit
+    end
   end
 
   def destroy

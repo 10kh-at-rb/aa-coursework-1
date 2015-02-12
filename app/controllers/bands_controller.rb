@@ -1,4 +1,6 @@
 class BandsController < ApplicationController
+  before_action :redirect_if_not_logged_in, except: [:index, :show]
+
   def index
     @bands = Band.all
 
@@ -35,9 +37,12 @@ class BandsController < ApplicationController
 
   def update
     @band = Band.find(params[:id])
-    @band.update(band_params)
 
-    redirect_to band_url(@band)
+    if @band.update(band_params)
+      redirect_to band_url(@band)
+    else
+      render :edit
+    end
   end
 
   def destroy

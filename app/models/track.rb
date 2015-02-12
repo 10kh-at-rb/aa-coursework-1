@@ -1,6 +1,7 @@
 class Track < ActiveRecord::Base
   validates :name, :album_id, :track_type, presence: true
   validates :track_type, inclusion: { in: %w(Bonus Regular) }
+  validates :name, presence: true, length: { minimum: 1}
 
   belongs_to(
     :album,

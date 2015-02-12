@@ -1,4 +1,6 @@
 class TracksController < ApplicationController
+  before_action :redirect_if_not_logged_in, except: [:index, :show]
+  
   def create
     @track = Track.new(track_params)
     @track.album_id = params[:album_id]
@@ -30,9 +32,12 @@ class TracksController < ApplicationController
 
   def update
     @track = Track.find(params[:id])
-    @track.update(track_params)
 
-    redirect_to track_url(@track)
+    if @track.update(track_params)
+      redirect_to track_url(@track)
+    else
+      render :edit
+    end
   end
 
   def destroy

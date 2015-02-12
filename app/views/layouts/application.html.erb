@@ -18,8 +18,12 @@
   <%= link_to "Log In", new_session_url %>
   or <%= link_to "Register", new_user_url %>
 <% end %>
+<br>
 
 <%= yield %>
+
+<br>
+<%= link_to "Return to Index", bands_url unless current_page?(bands_url) %>
 
 </body>
 </html>
