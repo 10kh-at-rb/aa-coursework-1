@@ -22,7 +22,7 @@ class SessionsController < ApplicationController
       session[:session_token] = nil
     end
 
-    redirect_to new_user_url
+    redirect_to new_session_url
   end
 
   private

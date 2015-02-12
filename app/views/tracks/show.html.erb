@@ -9,4 +9,8 @@
 </form>
 <br>
 
+<%= render "notes/note", track: @track %>
+
+<%= render "notes/form", track: @track %>
+
 <%= link_to "Back to Album", album_url(@track.album) %>
