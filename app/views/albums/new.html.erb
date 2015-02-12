@@ -11,8 +11,14 @@
   <br>
 
   <label for="album_type">Album Type:</label>
-  Studio <input type="radio" name="album[album_type]" value="Studio">
-  Live <input type="radio" name="album[album_type]" value="Live">
+  Studio <input type="radio" name="album[album_type]" value="Studio"
+  <% if @album.album_type == "Studio" %>
+    checked
+  <% end %>>
+  Live <input type="radio" name="album[album_type]" value="Live"
+  <% if @album.album_type == "Live" %>
+    checked
+  <% end %>>
   <br>
 
   <button>Create Album!</button>

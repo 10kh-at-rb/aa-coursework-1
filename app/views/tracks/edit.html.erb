@@ -14,8 +14,15 @@
    <br>
 
    <label for="track_type">Track Type:</label>
-   Regular <input type="radio" name="track[track_type]" value="Regular">
-   Bonus <input type="radio" name="track[track_type]" value="Bonus">
+   Regular <input type="radio" name="track[track_type]" value="Regular"
+   <% if @track.track_type == "Regular" %>
+     checked
+   <% end %>>
+
+   Bonus <input type="radio" name="track[track_type]" value="Bonus"
+   <% if @track.track_type == "Bonus" %>
+     checked
+   <% end %>>
    <br>
 
    <label for="lyrics">Lyrics:</label>
