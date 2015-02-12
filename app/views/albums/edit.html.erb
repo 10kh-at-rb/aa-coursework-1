@@ -1,3 +1,7 @@
+<% @album.errors.full_messages.each do |error| %>
+  <li><%= error %></li>
+<% end %>
+
 <form action="<%= album_url(@album) %>" method="POST">
   <input type="hidden"
            name="_method"
@@ -23,6 +27,6 @@
     checked
   <% end %>>
   <br>
-  
+
   <button>Edit Album!</button>
 </form>

@@ -1,3 +1,7 @@
+<% @album.errors.full_messages.each do |error| %>
+  <li><%= error %></li>
+<% end %>
+
 <form action="<%= band_albums_url %>" method="POST">
   <input type="hidden"
            name="authenticity_token"

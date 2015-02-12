@@ -1,3 +1,7 @@
+<% @band.errors.full_messages.each do |error| %>
+  <li><%= error %></li>
+<% end %>
+
 <form action="<%= band_url(@band) %>" method="POST">
   <input type="hidden"
            name="_method"

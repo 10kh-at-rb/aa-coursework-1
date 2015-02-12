@@ -1,3 +1,7 @@
+<% @track.errors.full_messages.each do |error| %>
+  <li><%= error %></li>
+<% end %>
+
 <form action="<%= track_url(@track) %>" method="POST">
   <input type="hidden"
            name="_method"

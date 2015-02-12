@@ -1,3 +1,7 @@
+<% @track.errors.full_messages.each do |error| %>
+  <li><%= error %></li>
+<% end %>
+
 <form action="<%= album_tracks_url %>" method="POST">
   <input type="hidden"
            name="authenticity_token"
