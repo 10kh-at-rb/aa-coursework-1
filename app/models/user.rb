@@ -3,6 +3,13 @@ class User < ActiveRecord::Base
   validates :email, :session_token, uniqueness: true, length: {minimum: 8}
   after_initialize :ensure_session_token
 
+  has_many(
+    :notes,
+    class_name: "Note",
+    foreign_key: :user_id,
+    primary_key: :id
+  )
+
   def self.generate_session_token
     SecureRandom::urlsafe_base64
   end
