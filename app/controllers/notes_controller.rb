@@ -10,12 +10,17 @@ class NotesController < ApplicationController
 
   def destroy
     @note = Note.find(params[:id])
-    @note.destroy
-    redirect_to track_url(@note.track_id)
+    if logged_in? && @note.user.id == current_user.id
+      @note.destroy
+      redirect_to track_url(@note.track_id)
+    else
+      render text: "403 FORBIDDEN"
+    end
   end
 
   private
   def note_params
     params.require(:note).permit(:note_body)
   end
+
 end
