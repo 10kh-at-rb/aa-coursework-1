@@ -21,6 +21,8 @@ class SessionsController < ApplicationController
       @user.reset_session_token!
       session[:session_token] = nil
     end
+
+    redirect_to new_user_url
   end
 
   private
