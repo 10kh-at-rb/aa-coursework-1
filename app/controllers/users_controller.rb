@@ -1,4 +1,11 @@
 class UsersController < ApplicationController
+  before_action :redirect_if_not_admin, only: [:index, :make_admin]
+  def index
+    @users = User.all
+
+    render :index
+  end
+
   def create
     @user = User.new(user_params)
 
@@ -32,6 +39,11 @@ class UsersController < ApplicationController
       flash[:message] = "Invalid Activation Token"
       redirect_to bands_url
     end
+  end
+
+  def make_admin
+    User.find(params[:id]).make_admin!
+    redirect_to users_url
   end
 
   private

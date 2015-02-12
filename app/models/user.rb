@@ -42,6 +42,11 @@ class User < ActiveRecord::Base
     BCrypt::Password.new(self.password_digest).is_password?(password)
   end
 
+  def make_admin!
+    self.admin = true
+    self.save
+  end
+
   private
 
   def ensure_session_token

@@ -5,4 +5,6 @@
 </table>
 <br>
 
-<%= link_to "Add Band", new_band_url %>
+<% if admin? %>
+  <%= link_to "Add Band", new_band_url %>
+<% end %>

@@ -9,7 +9,7 @@
     <tr>
       <td><%= note.user.email %>
       <td><%= note.note_body %>
-      <td><% if current_user.id == note.user.id %>
+      <td><% if (logged_in? && current_user.id == note.user.id) || admin? %>
             <form action="<%= track_note_url(track, note) %>" method="POST">
               <input type="hidden" name="_method" value="DELETE">
               <input type="hidden"

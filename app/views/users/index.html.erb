@@ -1,0 +1,16 @@
+<table border=1>
+  <tr>
+    <th>Email
+    <th>Admin
+  </tr>
+  <% @users.each do |user| %>
+    <tr>
+      <td><%= user.email %>
+      <td><%= user.admin %>
+      <td><% unless user.admin %>
+            <%= button_to "Make Admin", make_admin_user_url(user) %>
+          <% end %>
+    </tr>
+  <% end %>
+</table>
+<br>

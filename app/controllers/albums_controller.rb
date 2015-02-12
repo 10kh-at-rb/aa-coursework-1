@@ -1,6 +1,7 @@
 class AlbumsController < ApplicationController
   before_action :redirect_if_not_logged_in, except: [:index, :show]
-  
+  before_action :redirect_if_not_admin, except: [:show]
+
   def create
     @album = Album.new(album_params)
     @album.band_id = params[:band_id]
