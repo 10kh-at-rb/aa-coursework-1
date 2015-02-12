@@ -6,6 +6,16 @@
 </head>
 <body>
 
+<% if logged_in? %>
+  <form action="<%= session_url %>" method="POST">
+    <input type="hidden" name="_method" value="DELETE">
+    <button>Log Out</button
+  </form>
+<% else %>
+  <%= link_to "Log In", new_session_url %>
+  or <%= link_to "Register", new_user_url %>
+<% end %>
+
 <%= yield %>
 
 </body>
