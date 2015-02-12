@@ -1,5 +1,5 @@
 class Band < ActiveRecord::Base
-  validates :name
+  validates :name, presence: true
 
   has_many(
     :albums,

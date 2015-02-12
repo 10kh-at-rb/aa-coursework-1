@@ -1,0 +1,17 @@
+<form action="<%= bands_url %>" method="POST">
+  <input type="hidden"
+           name="authenticity_token"
+           value="<%= form_authenticity_token %>">
+
+  <label for="name">Name:</label>
+  <input type="text"
+          name="band[name]"
+          id="name"
+          value="<%= @band.name %>">
+  <br>
+
+  <button>Create Band!</button>
+</form>
+<br>
+
+<%= link_to "Return to Index", bands_url %>

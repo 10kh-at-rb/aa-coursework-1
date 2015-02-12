@@ -1,0 +1,28 @@
+<form action="<%= tracks_url %>" method="POST">
+  <input type="hidden"
+           name="authenticity_token"
+           value="<%= form_authenticity_token %>">
+
+  <label for="name">Name:</label>
+  <input type="text"
+          name="track[name]"
+          id="name"
+          value="<%= @track.name %>">
+  <br>
+
+  <label for="album">Album:</label>
+  <select id="album" name="track[album_id]">
+
+  </select>
+
+  <label for="track_type">Track Type:</label>
+  <input type="radio" name="track[track_type]" value="Regular">
+  <input type="radio" name="track[track_type]" value="Bonus">
+  <br>
+
+  <label for="lyrics">Lyrics:</label>
+  <textarea name="track[lyrics]" id="lyrics"><%= @track.lyrics %></textarea>
+  <br>
+
+  <button>Create Track!</button>
+</form>
