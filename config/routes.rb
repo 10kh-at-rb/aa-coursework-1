@@ -8,6 +8,15 @@ Rails.application.routes.draw do
 
   resources :subs, except: [:destroy]
 
-  resources :posts, except: [:index, :destroy]
+  resources :posts, except: [:index, :destroy] do
+    resources :comments, only: [:new, :create]
+  end
+
+  resources :comments, only: [:show] do
+    member do
+      get 'new'
+    end
+  end
+
 
 end

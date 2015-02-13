@@ -4,4 +4,16 @@
 <br>
 <%= @post.body %>
 <br>
-<%= @post.author.username %>
+By: <%= @post.author.username %>
+<br>
+<br>
+Comments <br>
+<% @post.comments.where("parent_comment_id IS NULL").each do |comment| %>
+
+  <%= link_to "#{comment.content}", comment_url(comment) %> <br>
+
+<% end %>
+
+<br>
+<br>
+<%= link_to "Add Comment", new_post_comment_url(@post) %>

@@ -23,6 +23,13 @@ class Post < ActiveRecord::Base
     source: :sub
   )
 
+  has_many(
+    :comments,
+    class_name: "Comment",
+    foreign_key: :post_id,
+    primary_key: :id
+  )
+
   private
 
   def has_at_least_one_sub
