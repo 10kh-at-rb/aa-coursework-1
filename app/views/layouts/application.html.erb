@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>RedditClone</title>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+
+<%= yield %>
+
+<br>
+<br>
+
+<% if logged_in? %>
+
+  current user: <%= current_user %>
+
+<% else %>
+
+  No User Logged In
+
+<% end %>
+
+</body>
+</html>
