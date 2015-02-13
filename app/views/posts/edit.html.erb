@@ -23,13 +23,14 @@
     <br>
     <br>
 
-    <label for="sub_selection">Sub</label>
-      <select name="post[sub_id]" id="sub_selection">
-      <% Sub.all.each do |sub| %>
+    <% Sub.all.each do |sub| %>
+      <input type="checkbox"
+            name="post[sub_ids][]"
+            value="<%= sub.id %>"
+            <%= "checked" if @post.subs.include?(sub)  %>>
+            <%= sub.title %>
+    <% end %>
 
-        <option value="<%= sub.id %>"<%= "selected" if sub.id == @post.sub_id %>>  <%= sub.title %> </option>
-      <% end %>
-    </select>
     <br>
     <br>
 
