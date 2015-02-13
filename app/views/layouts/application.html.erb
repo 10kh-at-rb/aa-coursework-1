@@ -13,7 +13,14 @@
 
 <% if logged_in? %>
 
-  current user: <%= current_user %>
+  current user: <%= current_user.username %>
+  <form action="<%= session_url %>" method="POST">
+    <input type="hidden" name="_method" value="DELETE">
+    <input type="hidden"
+          name="authenticity_token"
+          value="<%= form_authenticity_token %>">
+    <button>Log Out</button>
+  </form>
 
 <% else %>
 

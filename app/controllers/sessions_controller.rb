@@ -1,5 +1,7 @@
 class SessionsController < ApplicationController
 
+  before_action :redirect_if_logged_in, only: [:new, :create] 
+
   def new
     @user = User.new
     render :new
@@ -12,7 +14,6 @@ class SessionsController < ApplicationController
     )
 
     if @user
-      @user.reset_session_token
       log_in_user!(@user)
     else
       @user = User.new
@@ -23,6 +24,8 @@ class SessionsController < ApplicationController
   end
 
   def destroy
+    @user = current_user
+    log_out_user!(@user)
   end
 
 end
