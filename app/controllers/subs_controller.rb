@@ -1,6 +1,7 @@
 class SubsController < ApplicationController
 
   before_action :redirect_if_not_logged_in
+  before_action :redirect_if_not_moderator, only: [:edit, :update]
 
   def index
     @subs = Sub.all
@@ -36,14 +37,17 @@ class SubsController < ApplicationController
 
   def show
     @sub = Sub.find(params[:id])
-
     render :show
-
   end
 
   private
   def sub_params
     params.require(:sub).permit(:title, :description)
+  end
+
+  def redirect_if_not_moderator
+    @sub = Sub.find(params[:id])
+    redirect_to subs_url unless current_user == @sub.moderator
   end
 
 end

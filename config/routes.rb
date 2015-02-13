@@ -6,6 +6,6 @@ Rails.application.routes.draw do
 
   resources :subs, except: [:destroy]
 
-  resources :posts
+  resources :posts, except: [:index, :destroy]
 
 end
