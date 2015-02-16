@@ -1,6 +1,6 @@
 class GoalsController < ApplicationController
   before_action :redirect_if_not_logged_in
-  before_action :redirect_if_not_owner, only: [:edit, :update, :destroy]
+  before_action :redirect_if_not_owner, only: [:edit, :update, :destroy, :show]
 
   def index
     @user = User.find(params[:user_id])
@@ -20,7 +20,7 @@ class GoalsController < ApplicationController
     @user = User.find(params[:user_id])
     @goal = @user.goals.new(goal_params)
     if @goal.save
-      redirect_to user_goals_url(@user)
+      redirect_to user_url(@user)
     else
       render :new
     end
@@ -35,7 +35,7 @@ class GoalsController < ApplicationController
     @goal = Goal.find(params[:id])
 
     if @goal.update(goal_params)
-      redirect_to user_goals_url(@goal.user)
+      redirect_to user_url(@goal.user)
     else
       render :edit
     end
@@ -44,7 +44,13 @@ class GoalsController < ApplicationController
   def destroy
     @goal = Goal.find(params[:id])
     @goal.destroy
-    redirect_to user_goals_url(@goal.user)
+    redirect_to user_url(@goal.user)
+  end
+
+  def show
+    @goal = Goal.find(params[:id])
+
+    render :show
   end
 
 
@@ -56,7 +62,7 @@ class GoalsController < ApplicationController
 
   def redirect_if_not_owner
     @goal = Goal.find(params[:id])
-    redirect_to user_goals_url(current_user) unless current_user == @goal.user
+    redirect_to user_url(current_user) unless current_user == @goal.user
   end
 
 end

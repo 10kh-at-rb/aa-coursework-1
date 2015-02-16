@@ -2,7 +2,7 @@
 
 <%= @goal.errors.full_messages %>
 
-<form action="<%= user_goals_url %>" method="post">
+<form action="<%= user_goals_url(@goal.user) %>" method="post">
   <input type="hidden" name="authenticity_token"
           value="<%= form_authenticity_token %>">
 

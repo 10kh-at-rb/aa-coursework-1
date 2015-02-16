@@ -1,6 +1,6 @@
 <h1>Goals</h1>
 
-<% @goals.each do |goal| %>
+<% @user.goals.each do |goal| %>
   <% if goal.private == false || current_user == goal.user %>
     <%= link_to "#{goal.title}", goal_url(goal) %>
   <% end %>

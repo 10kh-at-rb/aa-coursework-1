@@ -33,7 +33,7 @@ end
 feature "logging out" do
 
   it "begins with logged out state" do
-    visit users_url
+    visit new_session_url
     expect(page).to have_content "Login"
   end
 
