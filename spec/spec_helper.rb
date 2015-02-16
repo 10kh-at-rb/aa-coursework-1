@@ -17,10 +17,10 @@ RSpec.configure do |config|
 end
 
 
-def create_test_user
+def create_test_user(username="test_user", password="test_password")
   visit new_user_url
-  fill_in "Username", with: "test_user"
-  fill_in "Password", with: "test_password"
+  fill_in "Username", with: username
+  fill_in "Password", with: password
   click_on "Create User"
 end
 

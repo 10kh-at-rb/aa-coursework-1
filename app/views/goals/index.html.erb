@@ -5,6 +5,8 @@
   <%= goal.content %>
   <% if goal.user == current_user %>
     <%= link_to "Edit", edit_goal_url(goal), id: "edit-#{goal.id}" %>
+    <%= button_to "Delete", goal_url(goal), id: "delete-#{goal.id}", method: "delete" %>
+    <br>
   <% end %>
 
 <% end %>
