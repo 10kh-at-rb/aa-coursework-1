@@ -1,0 +1,10 @@
+<h1>Goals</h1>
+
+<% @goals.each do |goal| %>
+  <%= goal.title %>
+  <%= goal.content %>
+  <% if goal.user == current_user %>
+    <%= link_to "Edit", edit_goal_url(goal), id: "edit-#{goal.id}" %>
+  <% end %>
+
+<% end %>

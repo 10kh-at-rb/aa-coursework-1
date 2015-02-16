@@ -23,6 +23,7 @@ feature "logging in" do
 
   it "shows username on the homepage after login" do
     create_test_user
+    click_on "Sign Out"
     log_in_test_user
     expect(page).to have_content "test_user"
   end
@@ -38,7 +39,6 @@ feature "logging out" do
 
   it "doesn't show username on the homepage after logout" do
     create_test_user
-    log_in_test_user
     click_on "Sign Out"
     expect(page).to_not have_content "test_user"
   end
