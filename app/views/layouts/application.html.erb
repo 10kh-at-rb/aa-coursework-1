@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Goalsapp</title>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+
+  <% if logged_in? %>
+    <%= "Hello #{current_user.username}" %>
+    <%= button_to "Sign Out", session_url, method: "delete" %>
+  <% else %>
+    <%= link_to "Login", new_session_url%>
+  <% end %>
+
+<%= yield %>
+
+</body>
+</html>
