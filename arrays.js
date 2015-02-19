@@ -53,3 +53,20 @@ var myTranspose = function (arr) {
 
   return transposed;
 };
+
+
+var stockPicker = function (arr) {
+  var maxProfit = 0;
+  var bestDates = [];
+
+  for (var i = 0; i <= arr.length - 2; i++) {
+    for (var j = i + 1; j <= arr.length - 1; j++) {
+      if (arr[j] - arr[i] > maxProfit) {
+        bestDates = [i, j];
+        maxProfit = arr[j] - arr[i];
+      }
+    };
+  };
+
+  return bestDates;
+};
