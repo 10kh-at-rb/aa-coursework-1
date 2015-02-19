@@ -33,3 +33,34 @@ var recursion2 = function (base, exp) {
            recursion2(base, newExp);
   }
 };
+
+var fibonacci = function (n) {
+  if (n === 0){
+    return [];
+  } else if (n === 1) {
+    return [0];
+  } else if (n === 2) {
+    return [0, 1];
+  }
+  var fibs = fibonacci(n-1);
+  var fibsLength = fibs.length;
+  var nextLast = fibs[fibsLength-1] + fibs[fibsLength - 2];
+
+  fibs.push(nextLast);
+  return fibs
+};
+
+var bsearch = function (arr, target) {
+  var mid = Math.floor(arr.length / 2);
+  if (arr[mid] === target) {
+    return mid;
+  } else if (arr[mid] < target) {
+    var secondHalf = arr.slice(mid + 1, arr.length);
+    return bsearch(secondHalf, target) + mid + 1; //[1,2,3,4,5]
+  } else if (arr[mid] > target) {
+    var firstHalf = arr.slice(0, mid);
+    return bsearch(firstHalf, target);
+  } else {
+    return null;
+  }
+};
