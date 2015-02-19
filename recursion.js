@@ -125,8 +125,16 @@ var makeChange = function(purse, denoms) {
 };
 
 var mergeSort = function(arr) {
+  if (arr.length === 1) {
+    return arr
+  }
 
-}
+  var mid = Math.floor(arr.length / 2);
+  var firstHalf = mergeSort(arr.slice(0, mid));
+  var secondHalf = mergeSort(arr.slice(mid));
+
+  return merge(firstHalf, secondHalf);
+};
 
 var merge = function(arr1, arr2) {
   var mergedArr = [];
@@ -138,9 +146,25 @@ var merge = function(arr1, arr2) {
       var shifted = arr1.shift();
       mergedArr.push(shifted);
     }
-    console.log("Arr1 " + arr1);
-    console.log("Arr2 " + arr2);
   }
 
   return mergedArr.concat(arr1, arr2);
+}
+
+var subsets = function (arr) {
+  if (arr.length === 0) {
+    return [[]];
+  } else if (arr.length === 1) {
+    return [[], arr];
+  }
+
+  var lastSubs = subsets(arr.slice(0, -1));
+  var addLast = [];
+
+  lastSubs.forEach ( function(el) {
+    addLast.push(el.concat([arr[arr.length - 1]]));
+  });
+
+  lastSubs = lastSubs.concat(addLast);
+  return lastSubs;
 }
