@@ -1,3 +1,5 @@
+"use strict";
+
 Array.prototype.uniq = function () {
   var uniqs = [];
 
@@ -27,10 +29,27 @@ Array.prototype.twoSum = function () {
   for (var i = 0; i < this.length; i++) {
     for (var j = i; j < this.length; j++) {
       if (j !== i && (this[i] + this[j]) === 0) {
-        var pair = [i, j]
+        var pair = [i, j];
         twoSums.push(pair);
+      }
     };
   };
 
   return twoSums;
+};
+
+var myTranspose = function (arr) {
+  var transposed = [];
+
+  for (var index = 0; index < arr.length; index++){
+    transposed.push([]);
+  };
+
+  for (var i = 0; i < arr.length; i++) {
+    for (var j = 0; j < arr.length; j++) {
+      transposed[j][i] = arr[i][j];
+    };
+  };
+
+  return transposed;
 };
