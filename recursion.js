@@ -64,3 +64,83 @@ var bsearch = function (arr, target) {
     return null;
   }
 };
+
+// var makeChange = function(purse, denoms) {
+//   if (denoms.length === 0) {
+//     return [];
+//   }
+//
+//   var changeArr = [];
+//   var testPurse = 0;
+//   var i = 0;
+//
+//   while (testPurse < purse){
+//     coin = denoms[i];
+//
+//     if (testPurse + coin <= purse) {
+//       testPurse += coin;
+//       changeArr.push(coin);
+//     } else {
+//       i++;
+//     }
+//
+//     console.log(testPurse)
+//     console.log(changeArr)
+//   };
+//
+//   var lastChange = makeChange(purse, denoms.slice[1,denoms.length]);
+//   if (lastChange.length < changeArr.length) {
+//     return lastChange;
+//     }
+//     else{
+//       return changeArr;
+//     }
+// };
+
+
+var makeChange = function(purse, denoms) {
+  "use strict";
+  if (purse === 0) {
+    return [];
+  }
+
+  var bestChange = null;
+
+  denoms.forEach (function(coin, i) {
+    if (purse < coin) { return };
+
+    var remainder = purse - coin;
+    var changeArr = [coin];
+    var remainderChangeArr = makeChange(remainder, denoms.slice(i));
+
+    changeArr = changeArr.concat(remainderChangeArr);
+
+    if (bestChange === null || changeArr.length < bestChange.length) {
+      bestChange = changeArr;
+    }
+
+  });
+  // console.log(bestChange);
+  return bestChange;
+};
+
+var mergeSort = function(arr) {
+
+}
+
+var merge = function(arr1, arr2) {
+  var mergedArr = [];
+  while ( arr1.length > 0 && arr2.length > 0) {
+    if (arr1[0] > arr2[0]) {
+      var shifted = arr2.shift();
+      mergedArr.push(shifted);
+    } else {
+      var shifted = arr1.shift();
+      mergedArr.push(shifted);
+    }
+    console.log("Arr1 " + arr1);
+    console.log("Arr2 " + arr2);
+  }
+
+  return mergedArr.concat(arr1, arr2);
+}
