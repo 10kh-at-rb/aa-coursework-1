@@ -3,6 +3,7 @@ var b = require('./board');
 function Game(reader) {
   this.reader = reader;
   this.board = new b();
+  this.turn = "X";
 }
 
 Game.prototype.printWinner = function () {
@@ -17,13 +18,11 @@ Game.prototype.printWinner = function () {
   }
 };
 
-Game.prototype.handleTurn = function (pos, mark) {
-  if (mark === "X" || mark === "O") {
-    if (!this.board.placeMark(pos, mark)) {
-      console.log("illegal move");
-    }
+Game.prototype.handleTurn = function (pos) {
+  if (this.board.placeMark(pos, this.turn)) {
+    this.turn === "X" ? this.turn = "O" : this.turn = "X";
   } else {
-    console.log("invalid mark");
+    console.log("illegal move");
   }
 };
 
@@ -33,17 +32,15 @@ Game.prototype.run = function(completionCallback) {
     completionCallback();
   } else {
     this.board.print();
-    var game = this;
 
-    this.reader.question("Enter a move: ", function (response) {
+    this.reader.question(this.turn + ", enter a move: ", function (response) {
       var parsed = response.split(","),
-          mark   = parsed[0],
-          row    = parseInt(parsed[1]),
-          col    = parseInt(parsed[2]);
+          row    = parseInt(parsed[0]),
+          col    = parseInt(parsed[1]);
 
-      game.handleTurn([row, col], mark);
-      game.run(completionCallback);
-    });
+      this.handleTurn([row, col]);
+      this.run(completionCallback);
+    }.bind(this));
   }
 };
 

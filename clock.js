@@ -16,11 +16,12 @@ Clock.prototype.run = function () {
   // 3. Schedule the tick interval.
   this.currentTime = new Date();
   this.printTime();
-  var clock = this;
-
-  setInterval(function () {
-    clock._tick();
-  }, 5000);
+  // var clock = this;
+  //
+  // setInterval(function () {
+  //   clock._tick();
+  // }, 5000);
+  setInterval(this._tick.bind(this), Clock.TICK);
 };
 
 Clock.prototype._tick = function () {
