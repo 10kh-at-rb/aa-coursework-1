@@ -32,7 +32,7 @@ $.Thumbnails.prototype.mouseLeaveActivate = function (event) {
 $.Thumbnails.prototype.shiftGutterImages = function (event) {
   event.preventDefault();
   var $clicked = $(event.currentTarget);
-  if ($clicked.html === "&lt;") {
+  if ($clicked.html() === "&lt;") {
     this.gutterIdx += 1;
     if (this.gutterIdx >= this.$images.length) {
       this.gutterIdx = 0;
