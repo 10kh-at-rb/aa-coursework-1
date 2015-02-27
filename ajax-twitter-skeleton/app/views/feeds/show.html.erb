@@ -1,11 +1,14 @@
 <h1>Welcome <%= current_user.username %>!</h1>
 
 <b>Your Feed!</b>
-<ul class="feed">
-  <% @feed_tweets.each do |tweet| %>
-    <li><%= render "tweets/tweet", tweet: tweet %></li>
-  <% end %>
-</ul>
+<section class="infinite-tweets" data-list-id=".feed">
+  <ul class="feed">
+    <!-- <% @feed_tweets.each do |tweet| %>
+      <li><%= render "tweets/tweet", tweet: tweet %></li>
+    <% end %> -->
+  </ul>
+  <a href="javascript:void(0)" class="fetch-more">Fetch More Tweets</a>
+</section>
 
 <%= render "tweets/form" %>
 
@@ -13,5 +16,6 @@
 <script>
   $(function () {
     $('.tweet-compose').tweetCompose();
+    $('.infinite-tweets').infiniteTweets();
   });
 </script>

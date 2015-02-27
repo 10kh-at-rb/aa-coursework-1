@@ -125,12 +125,12 @@ $(function () {
       dataType: "JSON",
       success: function (data) {
         this.clearInput();
-        this.handleSuccess(data);
+        this.handleSuccess(data, true);
       }.bind(this)
     })
   };
 
-  $.TweetCompose.prototype.handleSuccess = function (data) {
+  $.TweetCompose.prototype.handleSuccess = function (data, pre) {
     console.log(data);
     var $feed = $(this.$el.data('list-id'));
     var result = data.content + " -- <a href=\"/users/" +
@@ -151,7 +151,13 @@ $(function () {
     };
 
     $li.append($mentionedList);
-    $feed.prepend($li);
+
+    if (pre === true) {
+      $feed.prepend($li);
+    } else {
+      $feed.append($li);
+    }
+
   };
 
   $.TweetCompose.prototype.charsLeft = function (event) {
@@ -164,6 +170,37 @@ $(function () {
     this.$el.find(":input").val("");
     this.$el.find('.chars-left').text("140 characters left.");
     this.$el.find('.mention').remove()
+  };
+
+  $.InfiniteTweets = function (el) {
+    this.$el = $(el);
+    this.maxCreatedAt = null;
+    this.fetchTweets();
+    this.$el.on("click", ".fetch-more", this.fetchTweets.bind(this));
+  };
+
+  $.InfiniteTweets.prototype.fetchTweets = function (event) {
+    var maxCreatedAt;
+    if (this.maxCreatedAt !== null){
+      maxCreatedAt = {max_created_at: JSON.stringify(this.maxCreatedAt)};
+    } else {
+      maxCreatedAt = {};
+    }
+
+    $.ajax({
+      url: "/feed",
+      type: "GET",
+      dataType: "JSON",
+      data: maxCreatedAt,
+      success: function(data) {
+        console.log(data);
+        this.maxCreatedAt = new Date(data[data.length - 1].created_at);
+        for (var i = 0; i < data.length; i++) {
+          var tweet = data[i];
+          $.TweetCompose.prototype.handleSuccess.call(this, tweet, false);
+        }
+      }.bind(this)
+    });
   };
 
   $.fn.followToggle = function () {
@@ -181,6 +218,12 @@ $(function () {
   $.fn.tweetCompose = function () {
     return this.each(function () {
       new $.TweetCompose(this);
+    });
+  };
+
+  $.fn.infiniteTweets = function () {
+    return this.each(function () {
+      new $.InfiniteTweets(this);
     });
   };
 });
