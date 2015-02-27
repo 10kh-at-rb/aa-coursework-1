@@ -21,7 +21,6 @@ $(function () {
     this.$el = $(el);
     this.userId = this.$el.data("user-id") || options.userId;
     this.followState = this.$el.attr("follow-state") || options.followState;
-    console.log(this);
     this.render();
     this.$el.on("click", this.handleClick.bind(this));
   };
@@ -126,21 +125,24 @@ $(function () {
       dataType: "JSON",
       success: function (data) {
         this.clearInput();
-        this.handleSuccess(data);
+        this.handleSuccess([data], true);
       }.bind(this)
     })
   };
 
-  $.TweetCompose.prototype.handleSuccess = function (data) {
+  $.TweetCompose.prototype.handleSuccess = function (data, pre) {
     var templateCode = $("#tweet-renderer").html();
-    console.log(templateCode);
     var templateFn = _.template(templateCode);
     var renderedContent = templateFn({
-      tweets: [data]
+      tweets: data
     });
 
     var $feed = $(this.$el.data('list-id'));
-    $feed.prepend(renderedContent)
+    if (pre) {
+      $feed.prepend(renderedContent)
+    } else {
+      $feed.append(renderedContent);
+    }
   };
 
 
@@ -159,7 +161,7 @@ $(function () {
   $.InfiniteTweets = function (el) {
     this.$el = $(el);
     this.maxCreatedAt = null;
-    // this.fetchTweets();
+    this.fetchTweets();
     this.$el.on("click", ".fetch-more", this.fetchTweets.bind(this));
   };
 
@@ -177,18 +179,8 @@ $(function () {
       dataType: "JSON",
       data: maxCreatedAt,
       success: function(data) {
-        console.log(data);
         this.maxCreatedAt = new Date(data[data.length - 1].created_at);
-
-        var templateCode = $("#tweet-renderer").html();
-        console.log(templateCode);
-        var templateFn = _.template(templateCode);
-        var renderedContent = templateFn({
-          tweets: data
-        });
-
-        var $feed = $(this.$el.data('list-id'));
-        $feed.append(renderedContent)
+        $.TweetCompose.prototype.handleSuccess.call(this, data, false);
       }.bind(this)
     });
   };
