@@ -92,6 +92,51 @@ $(function () {
     };
   };
 
+  $.TweetCompose = function (el) {
+    this.$el = $(el);
+    this.$content = this.$el.find('#content');
+
+    this.$content.on("input", this.charsLeft.bind(this));
+    this.$el.on("submit", this.submit.bind(this));
+  };
+
+  $.TweetCompose.prototype.submit = function (event) {
+    event.preventDefault();
+    var input = this.$el.serialize();
+    $.ajax({
+      url: "/tweets",
+      type: "POST",
+      data: input,
+      dataType: "JSON",
+      success: function (data) {
+        this.clearInput();
+        this.handleSuccess(data);
+      }.bind(this)
+    })
+  };
+
+  $.TweetCompose.prototype.handleSuccess = function (data) {
+    console.log(JSON.stringify(data));
+    var $feed = $(this.$el.data('list-id'));
+    var result = data.content + " -- <a href=\"/users/" +
+                data.user.id + "\">" + data.user.username + "</a> -- " +
+                data.created_at;
+    var $li = $("<li>");
+    $li.append(result);
+    $feed.prepend($li);
+  };
+
+  $.TweetCompose.prototype.charsLeft = function (event) {
+    var len = $(event.currentTarget).val().length;
+    var remaining = 140 - len;
+    this.$el.find('.chars-left').text(remaining + " characters left.");
+  };
+
+  $.TweetCompose.prototype.clearInput = function () {
+    this.$el.find(":input").val("");
+    this.$el.find('.chars-left').text("140 characters left.");
+  };
+
   $.fn.followToggle = function () {
     return this.each(function () {
       new $.FollowToggle(this);
@@ -101,6 +146,12 @@ $(function () {
   $.fn.usersSearch = function () {
     return this.each(function () {
       new $.UsersSearch(this);
+    });
+  };
+
+  $.fn.tweetCompose = function () {
+    return this.each(function () {
+      new $.TweetCompose(this);
     });
   };
 });

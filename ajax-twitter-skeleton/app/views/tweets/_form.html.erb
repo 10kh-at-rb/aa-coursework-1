@@ -1,14 +1,12 @@
 <h2>New Tweet!</h2>
-<form action="/tweets" method="POST">
-  <input
-      type="hidden"
-      name="authenticity_token"
-      value="<%= form_authenticity_token %>">
+
+<form class="tweet-compose" data-list-id=".feed">
 
   <label>
     Content
-    <textarea name="tweet[content]"></textarea>
+    <textarea id="content" name="tweet[content]"></textarea>
   </label>
+  <strong class="chars-left">140 characters left.</strong>
   <br>
 
   <label>
@@ -22,5 +20,5 @@
   </label>
   <br>
 
-  <input type="Submit" value="Post Tweet!">
+  <button>Post Tweet!</button>
 </form>
