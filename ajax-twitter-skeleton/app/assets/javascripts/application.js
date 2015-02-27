@@ -98,6 +98,21 @@ $(function () {
 
     this.$content.on("input", this.charsLeft.bind(this));
     this.$el.on("submit", this.submit.bind(this));
+    this.$el.on("click", ".add-mention", this.addMentionedUser.bind(this));
+    this.$el.on("click", ".remove-mention", this.removeMention.bind(this));
+
+  };
+
+  $.TweetCompose.prototype.addMentionedUser = function (event) {
+    var $scriptTag = this.$el.find('script');
+    var $ul = this.$el.find('.mentioned-users');
+    $ul.append($scriptTag.html());
+  };
+
+  $.TweetCompose.prototype.removeMention = function (event) {
+    var $parent = $(event.currentTarget).parent();
+    $parent.find(":input").val("");
+    $parent.remove();
   };
 
   $.TweetCompose.prototype.submit = function (event) {
@@ -116,13 +131,26 @@ $(function () {
   };
 
   $.TweetCompose.prototype.handleSuccess = function (data) {
-    console.log(JSON.stringify(data));
+    console.log(data);
     var $feed = $(this.$el.data('list-id'));
     var result = data.content + " -- <a href=\"/users/" +
                 data.user.id + "\">" + data.user.username + "</a> -- " +
                 data.created_at;
     var $li = $("<li>");
     $li.append(result);
+
+    var $mentionedList = $('<ul>');
+    for (var i = 0; i < data.mentions.length; i++) {
+      var $subLi = $("<li>");
+      var mention = data.mentions[i];
+      var mentionResult = "<a href=\"/users/" +
+                          mention.user_id + "\">" +
+                          mention.user.username + "</a>";
+      $subLi.append(mentionResult);
+      $mentionedList.append($subLi);
+    };
+
+    $li.append($mentionedList);
     $feed.prepend($li);
   };
 
@@ -135,6 +163,7 @@ $(function () {
   $.TweetCompose.prototype.clearInput = function () {
     this.$el.find(":input").val("");
     this.$el.find('.chars-left').text("140 characters left.");
+    this.$el.find('.mention').remove()
   };
 
   $.fn.followToggle = function () {
