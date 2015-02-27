@@ -16,10 +16,11 @@
 
 
 $(function () {
-  $.FollowToggle = function (el) {
+  $.FollowToggle = function (el, options) {
     this.$el = $(el);
-    this.userId = this.$el.data("user-id");
-    this.followState = this.$el.attr("follow-state");
+    this.userId = this.$el.data("user-id") || options.userId;
+    this.followState = this.$el.attr("follow-state") || options.followState;
+    console.log(this);
     this.render();
     this.$el.on("click", this.handleClick.bind(this));
   };
@@ -54,13 +55,52 @@ $(function () {
     })
   };
 
+  $.UsersSearch = function (el) {
+    this.$el = $(el);
+    this.$input = this.$el.find("input");
+    this.$ul = this.$el.find(".users");
+
+    this.$input.on("input", this.handleInput.bind(this));
+  };
+
+  $.UsersSearch.prototype.handleInput = function (event) {
+    var input = this.$input.serialize();
+
+    $.ajax({
+      url: "/users/search",
+      type: "GET",
+      data: input,
+      dataType: "JSON",
+      success: function (data) {
+        this.listGenerate(data);
+      }.bind(this)
+    })
+  };
+
+  $.UsersSearch.prototype.listGenerate = function (data) {
+    this.$ul.empty();
+    for ( var i = 0; i < data.length; i++) {
+      var entry = data[i];
+      var $li = $("<li>");
+      $li.append("<a href=\"users/" +
+                  entry.id + "\">" +
+                  entry.username + "</a>")
+      var $button = $("<button>")
+      new $.FollowToggle($button, {userId: entry.id, followState: entry.followed.toString()});
+      $li.append($button);
+      this.$ul.append($li);
+    };
+  };
+
   $.fn.followToggle = function () {
     return this.each(function () {
       new $.FollowToggle(this);
     });
   };
-});
 
-$(function () {
-  $("button.follow-toggle").followToggle();
+  $.fn.usersSearch = function () {
+    return this.each(function () {
+      new $.UsersSearch(this);
+    });
+  };
 });
