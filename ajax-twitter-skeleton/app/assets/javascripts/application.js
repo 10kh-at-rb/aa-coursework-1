@@ -12,6 +12,7 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require underscore
 //= require_tree .
 
 
@@ -125,40 +126,23 @@ $(function () {
       dataType: "JSON",
       success: function (data) {
         this.clearInput();
-        this.handleSuccess(data, true);
+        this.handleSuccess(data);
       }.bind(this)
     })
   };
 
-  $.TweetCompose.prototype.handleSuccess = function (data, pre) {
-    console.log(data);
+  $.TweetCompose.prototype.handleSuccess = function (data) {
+    var templateCode = $("#tweet-renderer").html();
+    console.log(templateCode);
+    var templateFn = _.template(templateCode);
+    var renderedContent = templateFn({
+      tweets: [data]
+    });
+
     var $feed = $(this.$el.data('list-id'));
-    var result = data.content + " -- <a href=\"/users/" +
-                data.user.id + "\">" + data.user.username + "</a> -- " +
-                data.created_at;
-    var $li = $("<li>");
-    $li.append(result);
-
-    var $mentionedList = $('<ul>');
-    for (var i = 0; i < data.mentions.length; i++) {
-      var $subLi = $("<li>");
-      var mention = data.mentions[i];
-      var mentionResult = "<a href=\"/users/" +
-                          mention.user_id + "\">" +
-                          mention.user.username + "</a>";
-      $subLi.append(mentionResult);
-      $mentionedList.append($subLi);
-    };
-
-    $li.append($mentionedList);
-
-    if (pre === true) {
-      $feed.prepend($li);
-    } else {
-      $feed.append($li);
-    }
-
+    $feed.prepend(renderedContent)
   };
+
 
   $.TweetCompose.prototype.charsLeft = function (event) {
     var len = $(event.currentTarget).val().length;
@@ -175,7 +159,7 @@ $(function () {
   $.InfiniteTweets = function (el) {
     this.$el = $(el);
     this.maxCreatedAt = null;
-    this.fetchTweets();
+    // this.fetchTweets();
     this.$el.on("click", ".fetch-more", this.fetchTweets.bind(this));
   };
 
@@ -195,10 +179,16 @@ $(function () {
       success: function(data) {
         console.log(data);
         this.maxCreatedAt = new Date(data[data.length - 1].created_at);
-        for (var i = 0; i < data.length; i++) {
-          var tweet = data[i];
-          $.TweetCompose.prototype.handleSuccess.call(this, tweet, false);
-        }
+
+        var templateCode = $("#tweet-renderer").html();
+        console.log(templateCode);
+        var templateFn = _.template(templateCode);
+        var renderedContent = templateFn({
+          tweets: data
+        });
+
+        var $feed = $(this.$el.data('list-id'));
+        $feed.append(renderedContent)
       }.bind(this)
     });
   };
