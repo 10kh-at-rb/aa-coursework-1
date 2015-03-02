@@ -4,11 +4,11 @@ window.Pokedex.Collections = {};
 
 var Pokemon = Pokedex.Models.Pokemon = Backbone.Model.extend({ urlRoot: "/pokemon"}); // WRITE ME
 
-Pokedex.Models.Toy = Backbone.Model.extend(); // WRITE ME IN PHASE 2
+Pokedex.Models.Toy = Backbone.Model.extend({urlRoot: "/toys"}); // WRITE ME IN PHASE 2
 
 Pokedex.Collections.Pokemon = Backbone.Collection.extend({ url: "/pokemon", model: Pokedex.Models.Pokemon}); // WRITE ME
 
-Pokedex.Collections.PokemonToys = Backbone.Collection.extend({ model: Pokedex.Models.Toy }); // WRITE ME IN PHASE 2
+Pokedex.Collections.PokemonToys = Backbone.Collection.extend({ url: "/toys", model: Pokedex.Models.Toy }); // WRITE ME IN PHASE 2
 
 Pokemon.prototype.toys = function () {
   this._toys = this._toys || new Pokedex.Collections.PokemonToys;
@@ -56,6 +56,7 @@ window.Pokedex.RootView = function ($el) {
   this.$el.on("click", ".poke-list-item", this.selectPokemonFromList.bind(this));
   this.$el.on("submit", ".new-pokemon", this.submitPokemonForm.bind(this));
   this.$el.on("click", ".pokemon-detail .toys li", this.selectToyFromList.bind(this));
+  this.$el.on("change", ".toy-detail", this.reassignToy.bind(this));
 };
 
 $(function() {
