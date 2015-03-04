@@ -19,5 +19,6 @@ Journal.Views.PostsIndexItem = Backbone.View.extend( {
 
   deletePost: function(event) {
     this.post.destroy();
+    Backbone.history.navigate("", {trigger: true});
   }
 });
