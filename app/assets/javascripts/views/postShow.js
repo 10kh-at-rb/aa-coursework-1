@@ -1,5 +1,6 @@
 Journal.Views.PostShow = Backbone.View.extend( {
   initialize: function() {
+    console.log("post show", this.model);
     this.listenTo(this.model, "sync", this.render);
   },
 
@@ -28,10 +29,6 @@ Journal.Views.PostShow = Backbone.View.extend( {
     var value = $(event.currentTarget).val();
     var attrs = {};
     attrs[name] = value;
-    this.model.save(attrs, {
-      success: function() {
-        this.collection.fetch();
-      }.bind(this)
-    });
+    this.model.save(attrs);
   }
 });

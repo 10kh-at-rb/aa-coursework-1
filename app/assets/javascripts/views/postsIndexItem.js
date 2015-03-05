@@ -1,6 +1,8 @@
 Journal.Views.PostsIndexItem = Backbone.View.extend( {
   initialize: function(options) {
     this.post = options.post;
+    if (this.post.id === 19) console.log("index item", this.post)
+    this.listenTo(this.post, "change", this.render);
   },
 
   events: {

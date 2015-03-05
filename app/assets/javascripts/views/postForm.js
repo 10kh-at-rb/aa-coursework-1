@@ -14,7 +14,8 @@ Journal.Views.PostForm = Backbone.View.extend({
   render: function () {
     var content = this.template({
       post: this.model,
-      errors: this.errors });
+      errors: this.errors
+    });
     this.$el.html(content);
     return this;
   },
@@ -28,11 +29,13 @@ Journal.Views.PostForm = Backbone.View.extend({
       success: function () {
         var collection = this.model.collection || this.collection;
         collection.add(this.model, {merge: true});
-        Backbone.history.navigate("#posts/" + this.model.get("id"), {trigger: true});
+        Backbone.history.navigate("#posts/" + this.model.get("id"),
+            {trigger: true}
+        );
       }.bind(this),
       error: function (_, response) {
         this.errors = response.responseJSON;
-        this.render();
+        this.render(); // error event 
       }.bind(this)
     })
   }
