@@ -1,0 +1,24 @@
+<table border=1>
+  <caption>Notes</caption>
+  <tr>
+    <th>User
+    <th>Note
+    <th>Delete?
+  </tr>
+  <% track.notes.each do |note| %>
+    <tr>
+      <td><%= note.user.email %>
+      <td><%= note.note_body %>
+      <td><% if (logged_in? && current_user.id == note.user.id) || admin? %>
+            <form action="<%= track_note_url(track, note) %>" method="POST">
+              <input type="hidden" name="_method" value="DELETE">
+              <input type="hidden"
+                       name="authenticity_token"
+                       value="<%= form_authenticity_token %>">
+              <button>Delete Note</button>
+            </form>
+          <% end %>
+    </tr>
+  <% end %>
+</table>
+<br>

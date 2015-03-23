@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Music</title>
+
+</head>
+<body>
+
+<% if flash[:message] %>
+  <%= flash[:message] %>
+  <br>
+<% end %>
+
+<% if logged_in? %>
+  <form action="<%= session_url %>" method="POST">
+    <input type="hidden"
+             name="authenticity_token"
+             value="<%= form_authenticity_token %>">
+    <input type="hidden" name="_method" value="DELETE">
+    <button>Log Out</button>
+  </form>
+<% else %>
+  <%= link_to "Log In", new_session_url %>
+  or <%= link_to "Register", new_user_url %>
+<% end %>
+<br>
+
+<%= yield %>
+
+<br>
+<%= link_to "Return to Index", bands_url unless current_page?(bands_url) %>
+
+</body>
+</html>

@@ -1,0 +1,10 @@
+<table border=1>
+  <% @bands.each do |band| %>
+    <tr><td><%= link_to "#{band.name}", band_url(band) %></tr>
+  <% end %>
+</table>
+<br>
+
+<% if admin? %>
+  <%= link_to "Add Band", new_band_url %>
+<% end %>

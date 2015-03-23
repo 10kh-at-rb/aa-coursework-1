@@ -1,0 +1,37 @@
+<% @track.errors.full_messages.each do |error| %>
+  <li><%= error %></li>
+<% end %>
+
+<form action="<%= track_url(@track) %>" method="POST">
+  <input type="hidden"
+           name="_method"
+           value="PATCH">
+  <input type="hidden"
+           name="authenticity_token"
+           value="<%= form_authenticity_token %>">
+
+   <label for="name">Name:</label>
+   <input type="text"
+           name="track[name]"
+           id="name"
+           value="<%= @track.name %>">
+   <br>
+
+   <label for="track_type">Track Type:</label>
+   Regular <input type="radio" name="track[track_type]" value="Regular"
+   <% if @track.track_type == "Regular" %>
+     checked
+   <% end %>>
+
+   Bonus <input type="radio" name="track[track_type]" value="Bonus"
+   <% if @track.track_type == "Bonus" %>
+     checked
+   <% end %>>
+   <br>
+
+   <label for="lyrics">Lyrics:</label>
+   <textarea name="track[lyrics]" id="lyrics"><%= @track.lyrics %></textarea>
+   <br>
+
+  <button>Edit Track!</button>
+</form>
