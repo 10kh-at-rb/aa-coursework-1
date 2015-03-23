@@ -1,0 +1,29 @@
+<h1>Search!</h1>
+
+<!-- <form action="/users/search" method="GET">
+  <input
+    type="text"
+    name="query"
+    value="<%= @query %>">
+
+  <input type="submit" value="Search Users!">
+</form> -->
+
+<section class="users-search">
+  <label>
+    Username
+    <input type="text" name="query" value="">
+  </label>
+
+  <ul class="users">
+  </ul>
+</section>
+
+<script charset="utf-8">
+  $(function () {
+    $("button.follow-toggle").followToggle();
+    $(".users-search").usersSearch();
+  });
+
+
+</script>

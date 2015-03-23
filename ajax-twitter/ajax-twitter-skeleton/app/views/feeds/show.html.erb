@@ -1,0 +1,33 @@
+<h1>Welcome <%= current_user.username %>!</h1>
+
+<b>Your Feed!</b>
+<section class="infinite-tweets" data-list-id=".feed">
+  <ul class="feed">
+    <!-- <% @feed_tweets.each do |tweet| %>
+      <li><%= render "tweets/tweet", tweet: tweet %></li>
+    <% end %> -->
+  </ul>
+  <a href="javascript:void(0)" class="fetch-more">Fetch More Tweets</a>
+  <script type="text/template" id="tweet-renderer">
+    <%% _(tweets).forEach(function (tweet) { %>
+      <li><%%= tweet.content %> -- <a href="/users/<%%= tweet.user.id %>">
+        <%%= tweet.user.username %></a> -- <%%= tweet.created_at %><ul>
+        <%% tweet.mentions.forEach(function (mention) { %>
+          <li><a href="/users/<%%= mention.user_id %>">
+            <%%= mention.user.username %></a></li>
+        <%% }); %>
+        </ul>
+      </li>
+    <%% }); %>
+  </script>
+</section>
+
+<%= render "tweets/form" %>
+
+
+<script>
+  $(function () {
+    $('.tweet-compose').tweetCompose();
+    $('.infinite-tweets').infiniteTweets();
+  });
+</script>
