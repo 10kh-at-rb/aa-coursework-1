@@ -1,0 +1,40 @@
+<h1>New Goal</h1>
+
+<%= @goal.errors.full_messages %>
+
+<form action="<%= user_goals_url(@goal.user) %>" method="post">
+  <input type="hidden" name="authenticity_token"
+          value="<%= form_authenticity_token %>">
+
+  <label for="title">Title</label>
+  <input id="title" type="text" name="goal[title]">
+
+  <label for="content">Content</label>
+  <input id="content" type="text" name="goal[content]">
+  <br>
+  <br>
+  Access:
+  <br>
+  <label>Private
+    <input type="radio" name="goal[private]" value="true">
+  </label>
+  <br>
+  <label>Public
+    <input type="radio" name="goal[private]" value="false">
+  </label>
+  <br>
+  <br>
+  Status:
+  <br>
+  <label>Complete
+    <input type="radio" name="goal[completed]" value="true">
+  </label>
+  <br>
+  <label>Incomplete
+    <input type="radio" name="goal[completed]" value="false">
+  </label>
+  <br>
+
+  <button>Create Goal</button>
+
+</form>

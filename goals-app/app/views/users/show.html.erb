@@ -1,0 +1,14 @@
+<h1>Goals</h1>
+
+<% @user.goals.each do |goal| %>
+  <% if goal.private == false || current_user == goal.user %>
+    <%= link_to "#{goal.title}", goal_url(goal) %>
+  <% end %>
+
+  <% if goal.user == current_user %>
+    <%= link_to "Edit", edit_goal_url(goal), id: "edit-#{goal.id}" %>
+    <%= button_to "Delete", goal_url(goal), id: "delete-#{goal.id}", method: "delete" %>
+    <br>
+  <% end %>
+
+<% end %>

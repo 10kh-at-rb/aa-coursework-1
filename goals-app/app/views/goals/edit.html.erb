@@ -1,0 +1,41 @@
+<h1>Edit Goal</h1>
+
+<%= @goal.errors.full_messages %>
+
+<form action="<%= goal_url(@goal) %>" method="post">
+  <input type="hidden" name="_method" value="patch">
+  <input type="hidden" name="authenticity_token"
+          value="<%= form_authenticity_token %>">
+
+  <label for="title">Title</label>
+  <input id="title" type="text" name="goal[title]" value="<%= @goal.title %>">
+
+  <label for="content">Content</label>
+  <input id="content" type="text" name="goal[content]" value="<%= @goal.content %>">
+  <br>
+  <br>
+  Access:
+  <br>
+  <label>Private
+    <input type="radio" name="goal[private]" value="true" <%= "checked" if @goal.private == true %>>
+  </label>
+  <br>
+  <label>Public
+    <input type="radio" name="goal[private]" value="false" <%= "checked" if @goal.private == false %>>
+  </label>
+  <br>
+  <br>
+  Status:
+  <br>
+  <label>Complete
+    <input type="radio" name="goal[completed]" value="true" <%= "checked" if @goal.completed == true %>>
+  </label>
+  <br>
+  <label>Incomplete
+    <input type="radio" name="goal[completed]" value="false" <%= "checked" if @goal.completed == false %>>
+  </label>
+  <br>
+
+  <button>Edit Goal</button>
+
+</form>
