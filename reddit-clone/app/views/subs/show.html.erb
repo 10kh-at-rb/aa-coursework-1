@@ -1,0 +1,19 @@
+<%= @sub.title %>
+<br>
+<%= @sub.description %>
+<br>
+<%= @sub.moderator.username %>
+<table>
+  <tr>
+    <th>Post Title
+    <th>URL
+    <th>Post Author
+  </tr>
+  <% @sub.posts.each do |post| %>
+    <tr>
+      <td><%= link_to "#{post.title}", post_url(post) %>
+      <td><%= post.url %>
+      <td><%= post.author.username %>
+    </tr>
+  <% end %>
+</table>

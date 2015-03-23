@@ -1,0 +1,24 @@
+<h2> Log In </h2>
+
+<%= flash[:errors] %>
+<br>
+<br>
+
+<form action="<%= session_url %>" method="POST">
+    <input type="hidden"
+          name="authenticity_token"
+          value="<%= form_authenticity_token %>">
+
+    <label for="username">Username:</label>
+    <input type="text" name="user[username]" id="username" value=<%= @user.username %>>
+    <br>
+    <br>
+
+    <label for="password">Password:</label>
+    <input type="text" name="user[password]" id="password">
+    <br>
+    <br>
+
+    <button>Log In</button>
+
+</form>

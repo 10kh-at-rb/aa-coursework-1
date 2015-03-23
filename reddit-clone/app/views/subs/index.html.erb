@@ -1,0 +1,15 @@
+<table>
+  <tr>
+    <th>Sub Title
+    <th>Description
+    <th>Moderator
+  </tr>
+<% @subs.each do |sub| %>
+  <tr>
+    <td><%= link_to "#{sub.title}", sub_url(sub) %>
+    <td> <%= sub.description %>
+    <td> <%= sub.moderator.username %>
+  </tr>
+
+<% end %>
+</table>
