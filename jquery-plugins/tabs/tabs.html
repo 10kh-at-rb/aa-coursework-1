@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My Cool Website</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="./tabs.js"></script>
+    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.17.2/build/cssreset/cssreset-min.css">
+  <link href="./tabs.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <ul class="tabs" data-content-tabs="#content-tabs">
+      <li> <a href="#st-bernard" class="active">Saint Bernard</a></li>
+      <li> <a href="#beagle">Beagle</a></li>
+      <li> <a href="#golden-retriever">Golden Retriever</a></li>
+    </ul>
+    <section id="content-tabs">
+      <article class="tab-pane active" id="st-bernard">
+        <p>
+          Saint Bernards are awesome and really big.
+        </p>
+      </article>
+      <article class="tab-pane" id="beagle">
+        <p>
+          Beagles are the best! They are good at smelling stuff.
+        </p>
+      </article>
+      <article class="tab-pane" id="golden-retriever">
+        <p>
+          Golden retrievers are super friendly and make cute puppies.
+        </p>
+      </article>
+    </section>
+    <script>
+      $(function() {
+        $('.tabs').tabs();
+      })
+    </script>
+  </body>
+</html>
